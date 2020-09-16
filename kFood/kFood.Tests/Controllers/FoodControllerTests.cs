@@ -12,6 +12,8 @@ namespace kFood.Tests.Controllers
     {
         [Theory]
         [InlineData(5)]
+        [InlineData(51)]
+        [InlineData(26)]
         public void GetFood_Successful(int foodId)
         {
             // Arrange
