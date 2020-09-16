@@ -116,6 +116,10 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataModelLibrary\DataModelLibrary.csproj">
+      <Project>{e2ce4db7-047a-47cc-a370-a21b85f8ed5c}</Project>
+      <Name>DataModelLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\kFood\kFood.csproj">
       <Project>{57afd89d-9975-4fec-8373-ca3571bfbe5f}</Project>
       <Name>kFood</Name>

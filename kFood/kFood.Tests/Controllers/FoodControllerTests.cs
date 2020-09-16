@@ -1,6 +1,6 @@
 ﻿using Autofac.Extras.Moq;
+using DataModelLibrary.Models.Foods;
 using kFood.Controllers;
-using kFood.Models.Foods;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Xunit;
@@ -38,7 +38,7 @@ namespace kFood.Tests.Controllers
             FoodProduct foodProduct = new FoodProduct()
             {
                 Name = "Lasagne Bolognese",
-                FoodPhoto = "test"
+                FoodPhoto = "TEST"
             };
 
             return foodProduct;
