@@ -12,6 +12,11 @@ namespace DataModelLibrary.Models.Foods
     public class FoodProduct
     {
         /// <summary>
+        /// The food product identifier
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// The name of food product
         /// </summary>
         public string Name { get; set; }
