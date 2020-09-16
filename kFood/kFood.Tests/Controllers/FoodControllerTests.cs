@@ -1,4 +1,5 @@
 ﻿using Autofac.Extras.Moq;
+using DataAccessLibrary.Interfaces;
 using DataModelLibrary.Models.Foods;
 using kFood.Controllers;
 using System.Web.Http;
@@ -16,7 +17,7 @@ namespace kFood.Tests.Controllers
             // Arrange
             using(var mock = AutoMock.GetLoose())
             {
-                mock.Mock<IFoodProductDAO>()
+                mock.Mock<IFoodProductsDAO>()
                     .Setup(f => f.GetFoodProduct(foodId))
                     .Returns(GetSampleFoodProduct(foodId));
 
