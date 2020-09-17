@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DataAccessLibrary;
+using DataAccessLibrary.Interfaces;
+using DataModelLibrary.Models.Foods;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,6 +15,15 @@ namespace kFood.Controllers
     /// </summary>
     public class FoodController : ApiController
     {
+        #region Private Members
+        IFoodProductsDAO _foodProductsDAO;
+        #endregion
+
+        public FoodController()
+        {
+            _foodProductsDAO = new FoodProductsDAO();
+        }
+
         /// <summary>
         /// Get food product with details
         /// </summary>
@@ -19,7 +31,13 @@ namespace kFood.Controllers
         /// <returns></returns>
         public IHttpActionResult GetFood(int id)
         {
-            throw new NotImplementedException();
+            FoodProduct foodProduct;
+
+            foodProduct = _foodProductsDAO.GetFoodProduct(id);
+            if (foodProduct != null)
+                return Ok(foodProduct);
+
+            return NotFound();
         }
     }
 }

@@ -21,30 +21,24 @@ namespace kFood.Tests.Controllers
             {
                 mock.Mock<IFoodProductsDAO>()
                     .Setup(f => f.GetFoodProduct(foodId))
-                    .Returns(GetSampleFoodProduct(foodId));
+                    .Returns(new FoodProduct()
+                    {
+                        Id = foodId,
+                        Name = "Example name",
+                        FoodPhoto = "Example photo"
+                    });
 
-                var controller = new FoodController();
+                var cls = mock.Create<FoodController>();
 
                 // Act
-                IHttpActionResult actionResult = controller.GetFood(foodId);
+                IHttpActionResult actionResult = cls.GetFood(foodId);
                 var contentResult = actionResult as OkNegotiatedContentResult<FoodProduct>;
 
-                // Assert
+                //Assert
                 Assert.NotNull(contentResult);
                 Assert.NotNull(contentResult.Content);
                 Assert.Equal(foodId, contentResult.Content.Id);
             }
-        }
-
-        private FoodProduct GetSampleFoodProduct(int foodId)
-        {
-            FoodProduct foodProduct = new FoodProduct()
-            {
-                Name = "Lasagne Bolognese",
-                FoodPhoto = "TEST"
-            };
-
-            return foodProduct;
         }
     }
 }
