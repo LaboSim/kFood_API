@@ -19,11 +19,6 @@ namespace kFood.Controllers
         IFoodProductsDAO _foodProductsDAO;
         #endregion
 
-        public FoodController(IFoodProductsDAO foodProductsDAO)
-        {
-            _foodProductsDAO = foodProductsDAO;
-        }
-
         /// <summary>
         /// Get food product with details
         /// </summary>
@@ -31,12 +26,6 @@ namespace kFood.Controllers
         /// <returns></returns>
         public IHttpActionResult GetFood(int id)
         {
-            FoodProduct foodProduct;
-
-            foodProduct = _foodProductsDAO.GetFoodProduct(id);
-            if (foodProduct != null)
-                return Ok(foodProduct);
-
             return NotFound();
         }
     }
