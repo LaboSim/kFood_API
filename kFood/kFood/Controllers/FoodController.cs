@@ -19,9 +19,9 @@ namespace kFood.Controllers
         IFoodProductsDAO _foodProductsDAO;
         #endregion
 
-        public FoodController()
+        public FoodController(IFoodProductsDAO foodProductsDAO)
         {
-            _foodProductsDAO = new FoodProductsDAO();
+            _foodProductsDAO = foodProductsDAO;
         }
 
         /// <summary>

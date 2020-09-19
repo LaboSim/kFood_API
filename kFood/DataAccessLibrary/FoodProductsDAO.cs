@@ -13,10 +13,7 @@ namespace DataAccessLibrary
         /// <returns>The instance of <see cref="FoodProduct"/></returns>
         public FoodProduct GetFoodProduct(int foodId)
         {
-            return new FoodProduct()
-            {
-                Id = foodId
-            };
+            throw new NotImplementedException();
         }
     }
 }
