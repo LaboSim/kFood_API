@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FoodControllerTests.cs" />
+    <Compile Include="DAO\DataAccessBuilderTests.cs" />
     <Compile Include="DAO\FoodProductsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
