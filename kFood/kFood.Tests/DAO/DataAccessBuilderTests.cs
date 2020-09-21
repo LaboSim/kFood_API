@@ -22,9 +22,9 @@ namespace kFood.Tests.DAO
 
                 var cls = mock.Create<DataAccessBuilder>();
                 string expectedMagicConnectionString = @"Server=SZYMON\BASE;Database=kFood_DEV;Integrated Security=SSPI;";
-                var actual = cls.EstablishConnectionString();
+                var actualConnectionString = cls.EstablishConnectionString();
 
-                Assert.Equal(expectedMagicConnectionString, actual);
+                Assert.Equal(expectedMagicConnectionString, actualConnectionString);
             }
         }
     }
