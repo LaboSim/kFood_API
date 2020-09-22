@@ -1,10 +1,6 @@
 ﻿using DataAccessLibrary.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 
 namespace DataAccessLibrary
 {
@@ -13,9 +9,26 @@ namespace DataAccessLibrary
     /// </summary>
     public class DataAccessBuilder : IDataAccessBuilder
     {
+        /// <summary>
+        /// Establish connection string by getting it from configuration file
+        /// </summary>
+        /// <returns>The connection string</returns>
+        /// <exception cref="NullReferenceException">Returned when cannot read web.Config for some reason</exception>
+        /// <exception cref="Exception">Returned when occurs some other exception than <see cref="NullReferenceException"/></exception>
         public string EstablishConnectionString()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return ConfigurationManager.ConnectionStrings["kFood_DEV"].ConnectionString;
+            }
+            catch(NullReferenceException ex)
+            {
+                throw new NullReferenceException(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
