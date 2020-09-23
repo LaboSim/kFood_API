@@ -10,7 +10,7 @@ namespace DataAccessLibrary
         /// Get specific food product
         /// </summary>
         /// <param name="foodId">The food product identifier</param>
-        /// <returns>The instance of <see cref="FoodProduct"/></returns>
+        /// <returns>The instance of <see cref="FoodProduct"/> if exist</returns>
         public FoodProduct GetFoodProduct(int foodId)
         {
             throw new NotImplementedException();
