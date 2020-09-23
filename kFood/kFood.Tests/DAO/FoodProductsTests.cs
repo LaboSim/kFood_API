@@ -12,7 +12,7 @@ namespace kFood.Tests.DAO
     {
         [Theory]
         [InlineData(4)]
-        public void GetFoodProductAboutSpecificId_Success(int foodId)
+        public void GetFoodProductAboutSpecificId_Result_Ok(int foodId)
         {
             // Arrange
             using (var mock = AutoMock.GetLoose())
