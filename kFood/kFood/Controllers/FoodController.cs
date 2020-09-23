@@ -1,11 +1,5 @@
-﻿using DataAccessLibrary;
-using DataAccessLibrary.Interfaces;
+﻿using DataAccessLibrary.Interfaces;
 using DataModelLibrary.Models.Foods;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace kFood.Controllers
@@ -19,6 +13,11 @@ namespace kFood.Controllers
         IFoodProductsDAO _foodProductsDAO;
         #endregion
 
+        public FoodController(IFoodProductsDAO foodProductsDAO)
+        {
+            this._foodProductsDAO = foodProductsDAO;
+        }
+
         /// <summary>
         /// Get food product with details
         /// </summary>
@@ -26,6 +25,10 @@ namespace kFood.Controllers
         /// <returns></returns>
         public IHttpActionResult GetFood(int id)
         {
+            FoodProduct foodProduct = _foodProductsDAO.GetFoodProduct(id);
+            if (foodProduct != null)
+                return Ok(foodProduct);
+
             return NotFound();
         }
     }
