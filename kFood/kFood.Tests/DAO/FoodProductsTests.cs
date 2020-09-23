@@ -46,5 +46,26 @@ namespace kFood.Tests.DAO
                 Assert.Equal(expeced.FoodPhoto, actualContentResult.Content.FoodPhoto);
             }
         }
+
+        [Theory]
+        [InlineData(2)]
+        public void GetFoodProductAboutSpecificId_Result_NotFound(int foodId)
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.GetFoodProduct(foodId))
+                    .Returns((FoodProduct)null);
+
+                var cls = mock.Create<FoodController>();
+
+                // Act
+                IHttpActionResult actualActionResult = cls.GetFood(foodId);
+
+                // Assert
+                Assert.IsType<NotFoundResult>(actualActionResult);
+            }
+        }
     }
 }
