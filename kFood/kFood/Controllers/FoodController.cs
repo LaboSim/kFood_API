@@ -23,6 +23,7 @@ namespace kFood.Controllers
         /// </summary>
         /// <param name="id">The food product identifier</param>
         /// <returns></returns>
+        [Route("getFood/{id}")]
         public IHttpActionResult GetFood(int id)
         {
             FoodProduct foodProduct = _foodProductsDAO.GetFoodProduct(id);
