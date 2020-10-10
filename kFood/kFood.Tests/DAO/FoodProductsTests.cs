@@ -43,7 +43,7 @@ namespace kFood.Tests.DAO
                 Assert.True(actualContentResult.Content != null);
                 Assert.Equal(expeced.Id, actualContentResult.Content.Id);
                 Assert.Equal(expeced.Name, actualContentResult.Content.Name);
-                Assert.Equal(expeced.FoodURL.AbsoluteUri, actualContentResult.Content.FoodURL.AbsoluteUri);
+                Assert.Equal(expeced.FoodImageURL.AbsoluteUri, actualContentResult.Content.FoodImageURL.AbsoluteUri);
             }
         }
 
