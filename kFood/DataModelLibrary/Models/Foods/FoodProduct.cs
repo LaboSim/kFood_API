@@ -22,8 +22,8 @@ namespace DataModelLibrary.Models.Foods
         public string Name { get; set; }
 
         /// <summary>
-        /// The photo of food in Base64
+        /// The path to image
         /// </summary>
-        public string FoodPhoto { get; set; }
+        public Uri FoodURL { get; set; }
     }
 }
