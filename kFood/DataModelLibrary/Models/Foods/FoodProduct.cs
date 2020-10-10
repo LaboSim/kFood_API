@@ -24,6 +24,6 @@ namespace DataModelLibrary.Models.Foods
         /// <summary>
         /// The path to image
         /// </summary>
-        public Uri FoodURL { get; set; }
+        public Uri FoodImageURL { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace kFood.Tests.DAO
                     {
                         Id = foodId,
                         Name = "Food Name",
-                        FoodURL = new System.Uri("http://localhost:51052/getFood/1")
+                        FoodImageURL = new System.Uri("http://localhost:51052/getFood/1")
                     });
 
                 var cls = mock.Create<FoodController>();
@@ -31,7 +31,7 @@ namespace kFood.Tests.DAO
                 {
                     Id = foodId,
                     Name = "Food Name",
-                    FoodURL = new System.Uri("http://localhost:51052/getFood/1")
+                    FoodImageURL = new System.Uri("http://localhost:51052/getFood/1")
                 };
 
                 // Act
