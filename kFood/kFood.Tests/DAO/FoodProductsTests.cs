@@ -23,7 +23,7 @@ namespace kFood.Tests.DAO
                     {
                         Id = foodId,
                         Name = "Food Name",
-                        FoodPhoto = "Food photo"
+                        FoodURL = new System.Uri("http://localhost:51052/getFood/1")
                     });
 
                 var cls = mock.Create<FoodController>();
@@ -31,7 +31,7 @@ namespace kFood.Tests.DAO
                 {
                     Id = foodId,
                     Name = "Food Name",
-                    FoodPhoto = "Food photo"
+                    FoodURL = new System.Uri("http://localhost:51052/getFood/1")
                 };
 
                 // Act
@@ -43,7 +43,7 @@ namespace kFood.Tests.DAO
                 Assert.True(actualContentResult.Content != null);
                 Assert.Equal(expeced.Id, actualContentResult.Content.Id);
                 Assert.Equal(expeced.Name, actualContentResult.Content.Name);
-                Assert.Equal(expeced.FoodPhoto, actualContentResult.Content.FoodPhoto);
+                Assert.Equal(expeced.FoodURL.AbsoluteUri, actualContentResult.Content.FoodURL.AbsoluteUri);
             }
         }
 
