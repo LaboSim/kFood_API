@@ -112,6 +112,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="PostmanCollection\kFood_DEV.postman_collection.json" />
     <None Include="xunit.runner.json" />
   </ItemGroup>
   <ItemGroup>
