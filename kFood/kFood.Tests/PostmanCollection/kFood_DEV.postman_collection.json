@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "be611558-192e-4a62-8f3d-6fffa1ab259a",
+		"name": "kFood_DEV",
+		"description": "kFood API\r\nVersion: Development",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Food Products",
+			"item": [
+				{
+					"name": "GetFoodProduct",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51052/getFood/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51052",
+							"path": [
+								"getFood",
+								"1"
+							]
+						},
+						"description": "Get specific food product based on passed ID."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
