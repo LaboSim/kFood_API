@@ -2,6 +2,7 @@
 using DataAccessLibrary.Interfaces;
 using DataModelLibrary.Models.Foods;
 using kFood.Controllers;
+using kFood.Models.Interfaces;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Xunit;
@@ -17,8 +18,8 @@ namespace kFood.Tests.Controllers
             // Arrange
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<IFoodProductsDAO>()
-                    .Setup(x => x.GetFoodProduct(foodId))
+                mock.Mock<IFoodProductProcessor>()
+                    .Setup(x => x.GetSpecificFoodProduct(foodId))
                     .Returns(new FoodProduct()
                     {
                         Id = foodId,
