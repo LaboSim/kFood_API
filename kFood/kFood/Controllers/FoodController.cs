@@ -1,6 +1,6 @@
-﻿using DataAccessLibrary;
-using DataAccessLibrary.Interfaces;
-using DataModelLibrary.Models.Foods;
+﻿using DataModelLibrary.Models.Foods;
+using kFood.Models;
+using kFood.Models.Interfaces;
 using System.Web.Http;
 
 namespace kFood.Controllers
@@ -11,24 +11,25 @@ namespace kFood.Controllers
     public class FoodController : ApiController
     {
         #region Private Members
-        IFoodProductsDAO _foodProductsDAO;
+        private IFoodProductProcessor _foodProductProcessor;
         #endregion
+
 
         #region Constructors
         /// <summary>
-        /// Default constructor
+        /// The default constructor
         /// </summary>
         public FoodController()
         {
         }
 
         /// <summary>
-        /// The basic constructor to handle food products operation
+        /// The parameterized constructor for unit tests
         /// </summary>
-        /// <param name="foodProductsDAO">The instance of data access to food products</param>
-        public FoodController(IFoodProductsDAO foodProductsDAO) : this()
+        /// <param name="foodProductProcessor">The injected instance of <see cref="IFoodProductProcessor"/> to unit tests.</param>
+        public FoodController(IFoodProductProcessor foodProductProcessor) 
         {
-            this._foodProductsDAO = foodProductsDAO;
+            this._foodProductProcessor = foodProductProcessor;
         } 
         #endregion
 
@@ -40,8 +41,9 @@ namespace kFood.Controllers
         [Route("getFood/{id}")]
         public IHttpActionResult GetFood(int id)
         {
-            this._foodProductsDAO = this._foodProductsDAO ?? new FoodProductsDAO();
-            FoodProduct foodProduct = _foodProductsDAO.GetFoodProduct(id);
+            _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
+            FoodProduct foodProduct = _foodProductProcessor.GetSpecificFoodProduct(id);
+
             if (foodProduct != null)
                 return Ok(foodProduct);
 
