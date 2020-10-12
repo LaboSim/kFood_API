@@ -8,7 +8,7 @@ namespace DataAccessLibrary.Interfaces
     public interface IFoodProductsDAO
     {
         /// <summary>
-        /// Get specific food product
+        /// The signature of method to get specific food product from database
         /// </summary>
         /// <param name="foodId">The food product identifier</param>
         /// <returns>The instance of <see cref="FoodProduct"/></returns>

@@ -18,7 +18,7 @@ namespace DataAccessLibrary
         #endregion
 
         /// <summary>
-        /// Get specific food product
+        /// Get specific food product from database
         /// </summary>
         /// <param name="foodId">The food product identifier</param>
         /// <returns>The instance of <see cref="FoodProduct"/> if exist</returns>
