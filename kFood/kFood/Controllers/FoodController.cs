@@ -38,6 +38,7 @@ namespace kFood.Controllers
         /// </summary>
         /// <param name="id">The food product identifier</param>
         /// <returns>The information about specific food product</returns>
+        [HttpGet]
         [Route("getFood/{id}")]
         public IHttpActionResult GetFood(int id)
         {
