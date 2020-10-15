@@ -8,5 +8,6 @@ namespace kFood.Models.Interfaces
 {
     public interface IImageProcessor
     {
+        byte[] GetMainImageForSpecificFoodProduct(int foodId);
     }
 }
