@@ -44,8 +44,10 @@
   <ItemGroup>
     <Compile Include="DataAccessBuilder.cs" />
     <Compile Include="FoodProductsDAO.cs" />
+    <Compile Include="ImageDAO.cs" />
     <Compile Include="Interfaces\IDataAccessBuilder.cs" />
     <Compile Include="Interfaces\IFoodProductsDAO.cs" />
+    <Compile Include="Interfaces\IImageDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
