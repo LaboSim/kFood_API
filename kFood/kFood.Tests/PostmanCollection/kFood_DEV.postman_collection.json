@@ -32,6 +32,34 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Images",
+			"item": [
+				{
+					"name": "GetFoodProductMainImage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51052/view/getImage/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51052",
+							"path": [
+								"view",
+								"getImage",
+								"1"
+							]
+						},
+						"description": "Get food product main image "
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
