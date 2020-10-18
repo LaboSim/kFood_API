@@ -181,6 +181,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FoodProductProcessor.cs" />
+    <Compile Include="Models\ImageProcessor.cs" />
     <Compile Include="Models\Interfaces\IFoodProductProcessor.cs" />
     <Compile Include="Models\Interfaces\IImageProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
