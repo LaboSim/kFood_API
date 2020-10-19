@@ -45,11 +45,21 @@ namespace kFood.Controllers
         public IHttpActionResult GetFoodProductMainImage(int id)
         {
             _imageProcessor = _imageProcessor ?? new ImageProcessor();
+            byte[] image = _imageProcessor.GetMainImageForSpecificFoodProduct(id);
 
             IHttpActionResult response;
-            HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-            responseMessage.Content = new ByteArrayContent(_imageProcessor.GetMainImageForSpecificFoodProduct(id));
-            responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            HttpResponseMessage responseMessage;
+            if (image != null && image.Length > 0)
+            {
+                responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                responseMessage.Content = new ByteArrayContent(_imageProcessor.GetMainImageForSpecificFoodProduct(id));
+                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            }
+            else
+            {
+                responseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
             response = ResponseMessage(responseMessage);
             return response;
         }
