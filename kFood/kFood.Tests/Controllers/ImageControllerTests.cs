@@ -20,10 +20,10 @@ namespace kFood.Tests.Controllers
                 // Arange
                 mock.Mock<IImageProcessor>()
                     .Setup(x => x.GetMainImageForSpecificFoodProduct(foodId))
-                    .Returns(GetSampleByteImage(foodId));
+                    .Returns(GetSampleByteImage());
 
                 var cls = mock.Create<ImageController>();
-                var expected = GetSampleByteImage(foodId);
+                var expected = GetSampleByteImage();
 
                 // Act
                 IHttpActionResult actualActionResult = cls.GetFoodProductMainImage(foodId);
@@ -39,16 +39,49 @@ namespace kFood.Tests.Controllers
             }
         }
 
+        [Theory]
+        [InlineData(3)]
+        public void GetMainImageForFoodProduct_NotFound(int foodId)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arange
+                mock.Mock<IImageProcessor>()
+                    .Setup(x => x.GetMainImageForSpecificFoodProduct(foodId))
+                    .Returns(GetEmptyByteImage());
+
+                var cls = mock.Create<ImageController>();
+
+                // Act
+                IHttpActionResult actualActionResult = cls.GetFoodProductMainImage(foodId);
+                var actualContentResult = actualActionResult as ResponseMessageResult;
+
+                // Assert
+                Assert.True(actualContentResult != null);
+                Assert.True(actualContentResult.Response != null);
+                Assert.IsType<ResponseMessageResult>(actualContentResult);
+                Assert.Equal(HttpStatusCode.NotFound, actualContentResult.Response.StatusCode);
+            }
+        }
+
         #region Helper methods
         /// <summary>
         /// Get byte array imitate some image
         /// </summary>
-        /// <param name="foodId">The food product identifier</param>
-        /// <returns>The byte array taht imitate some image</returns>
-        private byte[] GetSampleByteImage(int foodId)
+        /// <returns>The byte array that imitate some image</returns>
+        private byte[] GetSampleByteImage()
         {
             return new byte[] { 255, 216 };
-        } 
+        }
+
+        /// <summary>
+        /// Get empty byte array imitate lack of image
+        /// </summary>
+        /// <returns>The empty byte array which imitate lack of image</returns>
+        private byte[] GetEmptyByteImage()
+        {
+            return new byte[] { };
+        }
         #endregion
     }
 }
