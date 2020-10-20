@@ -19,7 +19,16 @@ namespace kFood.Models
         /// </summary>
         public ImageProcessor()
         {
-        } 
+        }
+
+        /// <summary>
+        /// The parameterized constructor for unit tests
+        /// </summary>
+        /// <param name="imageDAO">The injected instance of <see cref="IImageDAO"/> to unit tests</param>
+        public ImageProcessor(IImageDAO imageDAO)
+        {
+            this._imageDAO = imageDAO;
+        }
         #endregion
 
         /// <summary>
@@ -29,7 +38,7 @@ namespace kFood.Models
         /// <returns>The image as byte[]</returns>
         public byte[] GetMainImageForSpecificFoodProduct(int foodId)
         {
-            _imageDAO = _imageDAO = new ImageDAO();
+            _imageDAO = _imageDAO ?? new ImageDAO();
             return _imageDAO.GetFoodProductMainImage(foodId);
         }
     }
