@@ -108,6 +108,7 @@
     <Compile Include="Controllers\ImageControllerTests.cs" />
     <Compile Include="DAO\DataAccessBuilderTests.cs" />
     <Compile Include="DAO\FoodProductsTests.cs" />
+    <Compile Include="Processors\ImageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
