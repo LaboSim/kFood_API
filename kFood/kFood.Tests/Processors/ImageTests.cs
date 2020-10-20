@@ -13,7 +13,7 @@ namespace kFood.Tests.Processors
         {
             using(var mock = AutoMock.GetLoose())
             {
-                // Arange
+                // Arrange
                 mock.Mock<IImageDAO>()
                     .Setup(x => x.GetFoodProductMainImage(foodId))
                     .Returns(GetSampleByteImage());
@@ -27,6 +27,30 @@ namespace kFood.Tests.Processors
                 // Assert
                 Assert.True(image != null);
                 Assert.True(image.Length > 0);
+                Assert.Equal(expected, image);
+            }
+        }
+
+        [Theory]
+        [InlineData(6)]
+        public void GetFoodProductMainImage_EmptyArrayImage(int foodId)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IImageDAO>()
+                    .Setup(x => x.GetFoodProductMainImage(foodId))
+                    .Returns(GetEmptyByteImage());
+
+                var cls = mock.Create<ImageProcessor>();
+                var expected = GetEmptyByteImage();
+
+                // Act
+                byte[] image = cls.GetMainImageForSpecificFoodProduct(foodId);
+
+                // Assert
+                Assert.True(image != null);
+                Assert.True(image.Length == 0);
                 Assert.Equal(expected, image);
             }
         }
