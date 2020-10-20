@@ -5,7 +5,7 @@ using kFood.Models;
 using System;
 using Xunit;
 
-namespace kFood.Tests.DAO
+namespace kFood.Tests.Processors
 {
     public class FoodProductsTests
     {
@@ -48,7 +48,7 @@ namespace kFood.Tests.DAO
                 Name = "Sample food product",
                 FoodImageURL = new Uri("http://localhost:51052/view/foodproductimage/1")
             };
-        } 
+        }
         #endregion
     }
 }
