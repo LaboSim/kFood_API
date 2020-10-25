@@ -1,5 +1,4 @@
-﻿using DataModelLibrary.DTO.Foods;
-using DataModelLibrary.Models.Foods;
+﻿using DataModelLibrary.Models.Foods;
 
 namespace kFood.Models.Interfaces
 {
@@ -14,11 +13,5 @@ namespace kFood.Models.Interfaces
         /// <param name="foodId">The identifier of food product</param>
         /// <returns>The instance of <see cref="FoodProduct"/> if exist</returns>
         FoodProduct GetSpecificFoodProduct(int foodId);
-
-        /// <summary>
-        /// The signature of method to create a new food product
-        /// </summary>
-        /// <param name="foodProductDTO">The instance of <see cref="FoodProductDTO"/></param>
-        byte CreateFoodProduct(FoodProductDTO foodProductDTO);
     }
 }
