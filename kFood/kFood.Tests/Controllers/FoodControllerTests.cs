@@ -4,6 +4,7 @@ using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.Controllers;
 using kFood.Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -26,7 +27,7 @@ namespace kFood.Tests.Controllers
                     {
                         Id = foodId,
                         Name = "Food Name",
-                        FoodImageURL = new System.Uri("http://localhost:51052/getFood/1")
+                        FoodImageURL = new Uri("http://localhost:51052/getFood/1")
                     });
 
                 var cls = mock.Create<FoodController>();
@@ -34,7 +35,7 @@ namespace kFood.Tests.Controllers
                 {
                     Id = foodId,
                     Name = "Food Name",
-                    FoodImageURL = new System.Uri("http://localhost:51052/getFood/1")
+                    FoodImageURL = new Uri("http://localhost:51052/getFood/1")
                 };
 
                 // Act
@@ -77,9 +78,15 @@ namespace kFood.Tests.Controllers
         {
             using(var mock = AutoMock.GetLoose())
             {
+                // Arrange
                 mock.Mock<IFoodProductProcessor>()
                     .Setup(x => x.CreateFoodProduct(foodProductDTO))
                     .Returns(true);
+
+                var cls = mock.Create<FoodController>();
+
+                // Act
+                IHttpActionResult httpActionResult = cls.CreateFoodProduct(foodProductDTO);
             }
         }
 
