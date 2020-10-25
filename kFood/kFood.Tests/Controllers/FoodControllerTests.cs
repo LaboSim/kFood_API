@@ -75,7 +75,12 @@ namespace kFood.Tests.Controllers
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Successful(FoodProductDTO foodProductDTO)
         {
-
+            using(var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IFoodProductProcessor>()
+                    .Setup(x => x.CreateFoodProduct(foodProductDTO))
+                    .Returns(true);
+            }
         }
 
         #region Helper methods
