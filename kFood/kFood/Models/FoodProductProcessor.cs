@@ -1,5 +1,6 @@
 ﻿using DataAccessLibrary;
 using DataAccessLibrary.Interfaces;
+using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.Models.Interfaces;
 
@@ -29,7 +30,7 @@ namespace kFood.Models
         public FoodProductProcessor(IFoodProductsDAO foodProductsDAO)
         {
             this._foodProductsDAO = foodProductsDAO;
-        } 
+        }
         #endregion
 
         /// <summary>
@@ -41,6 +42,11 @@ namespace kFood.Models
         {
             _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
             return _foodProductsDAO.GetFoodProduct(foodId);
+        }
+
+        public bool CreateFoodProduct(FoodProductDTO foodProductDTO)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
