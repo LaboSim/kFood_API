@@ -20,6 +20,7 @@ namespace kFood.Models.Interfaces
         /// </summary>
         /// <param name="foodProductDTO">The instance of <see cref="FoodProductDTO"/></param>
         /// <param name="foodProduct">The instance of <see cref="FoodProduct"/> in case when create resource was successed</param>
+        /// <returns>The flag indicating whether creating resource was succeeded</returns>
         bool CreateFoodProduct(FoodProductDTO foodProductDTO, out FoodProduct foodProduct);
     }
 }
