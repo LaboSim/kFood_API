@@ -1,8 +1,10 @@
 ﻿using Autofac.Extras.Moq;
 using DataAccessLibrary.Interfaces;
+using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.Controllers;
 using kFood.Models.Interfaces;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Xunit;
@@ -68,5 +70,28 @@ namespace kFood.Tests.Controllers
                 Assert.IsType<NotFoundResult>(actualActionResult);
             }
         }
+
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_Successful(FoodProductDTO foodProductDTO)
+        {
+
+        }
+
+        #region Helper methods
+        /// <summary>
+        /// Create collection of <see cref="FoodProductDTO"/> to pass to controller as argument
+        /// </summary>
+        /// <returns>The collection of instance <see cref="FoodProductDTO"/> that imitate POST request</returns>
+        public static IEnumerable<object[]> CreateFoodProductToPass()
+        {
+            return new List<object[]>
+            {
+                new object[] { new FoodProductDTO() { Name = "Food product test name 1" } },
+                new object[] { new FoodProductDTO() { Name = "Food product test name 2" } },
+                new object[] { new FoodProductDTO() { Name = "Food product test name 3" } }
+            };
+        } 
+        #endregion
     }
 }
