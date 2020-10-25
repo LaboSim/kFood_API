@@ -19,6 +19,6 @@ namespace kFood.Models.Interfaces
         /// The signature of method to create a new food product
         /// </summary>
         /// <param name="foodProductDTO">The instance of <see cref="FoodProductDTO"/></param>
-        byte CreateFoodProduct(FoodProductDTO foodProductDTO);
+        bool CreateFoodProduct(FoodProductDTO foodProductDTO);
     }
 }
