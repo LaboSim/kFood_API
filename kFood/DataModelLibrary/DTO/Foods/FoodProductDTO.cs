@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataModelLibrary.DTO.Foods
+﻿namespace DataModelLibrary.DTO.Foods
 {
     public class FoodProductDTO
     {
+        /// <summary>
+        /// The name of food product
+        /// </summary>
+        public string Name { get; set; }
     }
 }
