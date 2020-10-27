@@ -48,10 +48,10 @@ namespace kFood.Models
         /// Create a new food product
         /// </summary>
         /// <param name="foodProductDTO">The instance of <see cref="FoodProductDTO"/></param>
-        /// <param name="foodProduct">The instance of <see cref="FoodProduct"/> in case when create resource was successed</param>
-        /// <returns>The flag indicating whether creating resource was succeeded</returns>
-        public bool CreateFoodProduct(FoodProductDTO foodProductDTO, out FoodProduct foodProduct)
+        /// <returns>The instance of <see cref="FoodProduct"/> if adding resource was succeeded</returns>
+        public FoodProduct CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
+            // TODO: dodać dodawanie do bazy danych
             throw new System.NotImplementedException();
         }
     }
