@@ -81,12 +81,17 @@ namespace kFood.Tests.Controllers
                 // Arrange
                 mock.Mock<IFoodProductProcessor>()
                     .Setup(x => x.CreateFoodProduct(foodProductDTO))
-                    .Returns(true);
+                    .Returns(CreateSampleFoodProduct(foodProductDTO));
 
                 var cls = mock.Create<FoodController>();
 
                 // Act
                 IHttpActionResult httpActionResult = cls.CreateFoodProduct(foodProductDTO);
+                var actualContentResult = httpActionResult as CreatedNegotiatedContentResult<FoodProduct>;
+
+                // Assert
+                Assert.True(actualContentResult != null);
+                Assert.True(actualContentResult.Content != null);
             }
         }
 
@@ -103,7 +108,16 @@ namespace kFood.Tests.Controllers
                 new object[] { new FoodProductDTO() { Name = "Food product test name 2" } },
                 new object[] { new FoodProductDTO() { Name = "Food product test name 3" } }
             };
-        } 
+        }
+
+        private FoodProduct CreateSampleFoodProduct(FoodProductDTO foodProductDTO)
+        {
+            return new FoodProduct()
+            {
+                Name = foodProductDTO.Name,
+                FoodImageURL = new Uri("http://www.contoso.com/")
+            };
+        }
         #endregion
     }
 }
