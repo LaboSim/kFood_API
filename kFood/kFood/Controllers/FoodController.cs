@@ -1,6 +1,8 @@
-﻿using DataModelLibrary.Models.Foods;
+﻿using DataModelLibrary.DTO.Foods;
+using DataModelLibrary.Models.Foods;
 using kFood.Models;
 using kFood.Models.Interfaces;
+using System;
 using System.Web.Http;
 
 namespace kFood.Controllers
@@ -49,6 +51,27 @@ namespace kFood.Controllers
                 return Ok(foodProduct);
 
             return NotFound();
+        }
+
+        /// <summary>
+        /// Create a new food product
+        /// </summary>
+        /// <param name="foodProductDTO">The instance of <see cref="FoodProductDTO"/> in POST request</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("createFoodProduct")]
+        public IHttpActionResult CreateFoodProduct(FoodProductDTO foodProductDTO)
+        {
+            if(foodProductDTO == null)
+                return BadRequest();
+
+            _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
+
+            FoodProduct foodProduct = _foodProductProcessor.CreateFoodProduct(foodProductDTO);
+            if (foodProduct != null)
+                return Created<FoodProduct>(foodProduct.FoodImageURL, foodProduct);
+
+            return Conflict();
         }
     }
 }
