@@ -92,6 +92,8 @@ namespace kFood.Tests.Controllers
                 // Assert
                 Assert.True(actualContentResult != null);
                 Assert.True(actualContentResult.Content != null);
+                Assert.Equal("http://www.contoso.com/", Convert.ToString(actualContentResult.Content.FoodImageURL));
+                Assert.True(actualContentResult.Content.Name.Contains("Food product test name") == true);
             }
         }
 
