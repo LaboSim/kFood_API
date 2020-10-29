@@ -115,7 +115,7 @@ namespace kFood.Tests.Controllers
             return new FoodProduct()
             {
                 Name = foodProductDTO.Name,
-                FoodImageURL = new Uri("http://www.contoso.com/")
+                FoodImageURL = new Uri("http://www.contoso.com/") // only testing
             };
         }
         #endregion
