@@ -97,11 +97,20 @@ namespace kFood.Tests.Controllers
             }
         }
 
-        [Theory]
-        [MemberData]
-        public void CreateFoodProduct_BadRequest(FoodProductDTO foodProductDTO)
+        [Fact]
+        public void CreateFoodProduct_BadRequest()
         {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                var cls = mock.Create<FoodController>();
 
+                // Act
+                IHttpActionResult httpActionResult = cls.CreateFoodProduct(null);
+
+                // Assert
+                Assert.IsType<BadRequestResult>(httpActionResult);
+            }
         }
 
         #region Helper methods
@@ -117,15 +126,6 @@ namespace kFood.Tests.Controllers
                 new object[] { new FoodProductDTO() { Name = "Food product test name 2" } },
                 new object[] { new FoodProductDTO() { Name = "Food product test name 3" } }
             };
-        }
-
-        /// <summary>
-        /// Create an empty collection of <see cref="FoodProductDTO"/> to pass to controller as argument
-        /// </summary>
-        /// <returns>The empty collection of <see cref="FoodProductDTO"/> that imitate POST request</returns>
-        public static IEnumerable<object[]> CreateEmptyFoodProductToPass()
-        {
-            return new List<object[]> { };
         }
 
         private FoodProduct CreateSampleFoodProduct(FoodProductDTO foodProductDTO)
