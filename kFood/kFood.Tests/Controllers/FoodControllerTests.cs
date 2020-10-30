@@ -97,6 +97,25 @@ namespace kFood.Tests.Controllers
             }
         }
 
+        public void CreateFoodProduct_Conflict(FoodProductDTO foodProductDTO)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductProcessor>()
+                    .Setup(x => x.CreateFoodProduct(foodProductDTO))
+                    .Returns((FoodProduct)null);
+
+                var cls = mock.Create<FoodController>();
+
+                // Act
+                IHttpActionResult httpActionResult = cls.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Assert.IsType<ConflictResult>(httpActionResult);
+            }
+        }
+
         [Fact]
         public void CreateFoodProduct_BadRequest()
         {
@@ -122,9 +141,7 @@ namespace kFood.Tests.Controllers
         {
             return new List<object[]>
             {
-                new object[] { new FoodProductDTO() { Name = "Food product test name 1" } },
-                new object[] { new FoodProductDTO() { Name = "Food product test name 2" } },
-                new object[] { new FoodProductDTO() { Name = "Food product test name 3" } }
+                new object[] { new FoodProductDTO() { Name = "Food product test name 1" } }
             };
         }
 
