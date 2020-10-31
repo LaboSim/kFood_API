@@ -43,12 +43,20 @@ namespace kFood.Tests.Processors
             using(var mock = AutoMock.GetLoose())
             {
                 // Fake food product after mapping
-                FoodProduct foodProduct = new FoodProduct();
+                FoodProduct foodProductToAdd = new FoodProduct();
 
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
-                    .Setup(x => x.CreateFoodProduct(foodProduct))
+                    .Setup(x => x.CreateFoodProduct(foodProductToAdd))
                     .Returns(Convert.ToByte(1));
+
+                var cls = mock.Create<FoodProductProcessor>();
+
+                // Act
+                FoodProduct addedFoodProduct = cls.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Assert.True(addedFoodProduct != null);
             }
         }
 
