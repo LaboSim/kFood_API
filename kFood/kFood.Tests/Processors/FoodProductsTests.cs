@@ -48,7 +48,7 @@ namespace kFood.Tests.Processors
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
                     .Setup(x => x.CreateFoodProduct(foodProductToAdd))
-                    .Returns(Convert.ToByte(1));
+                    .Returns(true);
 
                 var cls = mock.Create<FoodProductProcessor>();
 
