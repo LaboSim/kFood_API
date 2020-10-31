@@ -97,6 +97,8 @@ namespace kFood.Tests.Controllers
             }
         }
 
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Conflict(FoodProductDTO foodProductDTO)
         {
             using(var mock = AutoMock.GetLoose())
