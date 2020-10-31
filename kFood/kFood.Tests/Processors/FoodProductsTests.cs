@@ -4,6 +4,7 @@ using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.Models;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace kFood.Tests.Processors
@@ -35,6 +36,8 @@ namespace kFood.Tests.Processors
             }
         }
 
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Success(FoodProductDTO foodProductDTO)
         {
 
@@ -53,6 +56,18 @@ namespace kFood.Tests.Processors
                 Id = foodId,
                 Name = "Sample food product",
                 FoodImageURL = new Uri("http://localhost:51052/view/foodproductimage/1")
+            };
+        }
+
+        /// <summary>
+        /// Create collection of <see cref="FoodProductDTO"/> to pass to processor as argument
+        /// </summary>
+        /// <returns>The collection of fake instance <see cref="FoodProductDTO"/></returns>
+        public static IEnumerable<object[]> CreateFoodProductToPass()
+        {
+            return new List<object[]>
+            {
+                new object[] { new FoodProductDTO() { Name = "Food product test name 1" } }
             };
         }
         #endregion
