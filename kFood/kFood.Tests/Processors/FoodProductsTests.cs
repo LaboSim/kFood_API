@@ -40,7 +40,16 @@ namespace kFood.Tests.Processors
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Success(FoodProductDTO foodProductDTO)
         {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Fake food product after mapping
+                FoodProduct foodProduct = new FoodProduct();
 
+                // Arrange
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.CreateFoodProduct(foodProduct))
+                    .Returns(Convert.ToByte(1));
+            }
         }
 
         #region Helper methods
