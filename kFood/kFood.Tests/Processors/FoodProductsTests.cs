@@ -1,5 +1,6 @@
 ﻿using Autofac.Extras.Moq;
 using DataAccessLibrary.Interfaces;
+using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.Models;
 using System;
@@ -32,6 +33,11 @@ namespace kFood.Tests.Processors
                 Assert.Equal(expected.Name, foodProduct.Name);
                 Assert.Equal(expected.FoodImageURL, foodProduct.FoodImageURL);
             }
+        }
+
+        public void CreateFoodProduct_Success(FoodProductDTO foodProductDTO)
+        {
+
         }
 
         #region Helper methods
