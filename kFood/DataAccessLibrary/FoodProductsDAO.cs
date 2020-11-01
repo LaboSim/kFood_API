@@ -14,7 +14,7 @@ namespace DataAccessLibrary
         /// </summary>
         public FoodProductsDAO() : base()
         {
-        } 
+        }
         #endregion
 
         /// <summary>
@@ -57,6 +57,16 @@ namespace DataAccessLibrary
                 // TODO add logging + comment
                 throw new Exception();
             }
+        }
+
+        /// <summary>
+        /// Create a new food product
+        /// </summary>
+        /// <param name="foodProduct">The instance of <see cref="FoodProduct"/></param>
+        /// <returns>The flag indicating whether a new food product was created</returns>
+        public bool CreateFoodProduct(FoodProduct foodProduct)
+        {
+            throw new NotImplementedException();
         }
     }
 }
