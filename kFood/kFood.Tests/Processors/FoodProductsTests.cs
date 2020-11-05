@@ -62,6 +62,29 @@ namespace kFood.Tests.Processors
             }
         }
 
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_Unsuccess(FoodProductDTO foodProductDTO)
+        {
+            Mapper.AddProfile<MappingProfile>();
+
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
+                    .Returns(false);
+
+                var cls = mock.Create<FoodProductProcessor>();
+
+                // Act
+                FoodProduct foodProduct = cls.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Assert.Null(foodProduct);
+            }
+        }
+
         #region Helper methods
         /// <summary>
         /// Get sample food product
