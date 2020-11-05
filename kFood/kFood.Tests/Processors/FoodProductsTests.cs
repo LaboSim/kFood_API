@@ -1,8 +1,11 @@
 ﻿using Autofac.Extras.Moq;
+using AutoMapper;
 using DataAccessLibrary.Interfaces;
 using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
+using kFood.App_Start;
 using kFood.Models;
+using Moq;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -40,14 +43,13 @@ namespace kFood.Tests.Processors
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Success(FoodProductDTO foodProductDTO)
         {
-            using(var mock = AutoMock.GetLoose())
-            {
-                // Fake food product after mapping
-                FoodProduct foodProductToAdd = new FoodProduct();
+            Mapper.AddProfile<MappingProfile>();
 
+            using (var mock = AutoMock.GetLoose())
+            {
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
-                    .Setup(x => x.CreateFoodProduct(foodProductToAdd))
+                    .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
                     .Returns(true);
 
                 var cls = mock.Create<FoodProductProcessor>();
