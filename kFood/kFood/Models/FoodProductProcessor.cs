@@ -1,4 +1,5 @@
-﻿using DataAccessLibrary;
+﻿using AutoMapper;
+using DataAccessLibrary;
 using DataAccessLibrary.Interfaces;
 using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
@@ -51,8 +52,15 @@ namespace kFood.Models
         /// <returns>The instance of <see cref="FoodProduct"/> if adding resource was succeeded</returns>
         public FoodProduct CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
-            // TODO: dodać dodawanie do bazy danych
-            throw new System.NotImplementedException();
+            FoodProduct foodProduct = Mapper.Map<FoodProduct>(foodProductDTO);
+
+            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+            bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
+
+            if (created)
+                return foodProduct;
+            else
+                return (FoodProduct)null;
         }
     }
 }
