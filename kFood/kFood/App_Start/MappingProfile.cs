@@ -14,7 +14,7 @@ namespace kFood.App_Start
         /// </summary>
         public MappingProfile()
         {
-            CreateMap<FoodProductDTO, FoodProduct>();
+            Mapper.CreateMap<FoodProductDTO, FoodProduct>();
         }
     }
 }
