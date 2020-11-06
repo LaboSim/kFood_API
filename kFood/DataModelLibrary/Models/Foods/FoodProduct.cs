@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataModelLibrary.Models.Foods
 {
@@ -20,6 +16,11 @@ namespace DataModelLibrary.Models.Foods
         /// The name of food product
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The description of food product
+        /// </summary>
+        public string Description { get; set; }
 
         /// <summary>
         /// The path to image
