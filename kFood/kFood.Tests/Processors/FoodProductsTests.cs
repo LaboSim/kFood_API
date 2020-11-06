@@ -35,6 +35,7 @@ namespace kFood.Tests.Processors
                 Assert.True(foodProduct != null);
                 Assert.Equal(expected.Id, foodProduct.Id);
                 Assert.Equal(expected.Name, foodProduct.Name);
+                Assert.Equal(expected.Description, foodProduct.Description);
                 Assert.Equal(expected.FoodImageURL, foodProduct.FoodImageURL);
             }
         }
@@ -97,6 +98,7 @@ namespace kFood.Tests.Processors
             {
                 Id = foodId,
                 Name = "Sample food product",
+                Description = "Sample description of food product",
                 FoodImageURL = new Uri("http://localhost:51052/view/foodproductimage/1")
             };
         }
@@ -109,7 +111,7 @@ namespace kFood.Tests.Processors
         {
             return new List<object[]>
             {
-                new object[] { new FoodProductDTO() { Name = "Food product test name 1" } }
+                new object[] { new FoodProductDTO() { Name = "Food product test name 1", Description = "Sample description of food product" } }
             };
         }
         #endregion
