@@ -27,6 +27,7 @@ namespace kFood.Tests.Controllers
                     {
                         Id = foodId,
                         Name = "Food Name",
+                        Description = "Sample description of food product",
                         FoodImageURL = new Uri("http://localhost:51052/getFood/1")
                     });
 
@@ -35,6 +36,7 @@ namespace kFood.Tests.Controllers
                 {
                     Id = foodId,
                     Name = "Food Name",
+                    Description = "Sample description of food product",
                     FoodImageURL = new Uri("http://localhost:51052/getFood/1")
                 };
 
@@ -47,6 +49,7 @@ namespace kFood.Tests.Controllers
                 Assert.True(actualContentResult.Content != null);
                 Assert.Equal(expeced.Id, actualContentResult.Content.Id);
                 Assert.Equal(expeced.Name, actualContentResult.Content.Name);
+                Assert.Equal(expeced.Description, actualContentResult.Content.Description);
                 Assert.Equal(expeced.FoodImageURL.AbsoluteUri, actualContentResult.Content.FoodImageURL.AbsoluteUri);
             }
         }
@@ -89,11 +92,14 @@ namespace kFood.Tests.Controllers
                 IHttpActionResult httpActionResult = cls.CreateFoodProduct(foodProductDTO);
                 var actualContentResult = httpActionResult as CreatedNegotiatedContentResult<FoodProduct>;
 
+                var expectedFoodProduct = CreateSampleFoodProduct(foodProductDTO);
+
                 // Assert
                 Assert.True(actualContentResult != null);
                 Assert.True(actualContentResult.Content != null);
-                Assert.Equal("http://www.contoso.com/", Convert.ToString(actualContentResult.Content.FoodImageURL));
-                Assert.True(actualContentResult.Content.Name.Contains("Food product test name") == true);
+                Assert.Equal(Convert.ToString(expectedFoodProduct.FoodImageURL), Convert.ToString(actualContentResult.Content.FoodImageURL));
+                Assert.Equal(expectedFoodProduct.Name, actualContentResult.Content.Name);
+                Assert.Equal(expectedFoodProduct.Description, actualContentResult.Content.Description);
             }
         }
 
@@ -143,7 +149,7 @@ namespace kFood.Tests.Controllers
         {
             return new List<object[]>
             {
-                new object[] { new FoodProductDTO() { Name = "Food product test name 1" } }
+                new object[] { new FoodProductDTO() { Name = "Food product test name 1", Description = "Sample description of food product" } }
             };
         }
 
@@ -152,6 +158,7 @@ namespace kFood.Tests.Controllers
             return new FoodProduct()
             {
                 Name = foodProductDTO.Name,
+                Description = foodProductDTO.Description,
                 FoodImageURL = new Uri("http://www.contoso.com/") // only testing
             };
         }
