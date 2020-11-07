@@ -40,7 +40,26 @@ namespace kFood.Tests.Processors
             }
         }
 
-        // TODO GetSpecificFoodProduct_Unsuccess
+        [Theory]
+        [InlineData(7)]
+        public void GetSpecificFoodProduct_Unsuccess(int foodId)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.GetFoodProduct(foodId))
+                    .Returns((FoodProduct)null);
+
+                var cls = mock.Create<FoodProductProcessor>();
+
+                // Act
+                var actualFoodProduct = cls.GetSpecificFoodProduct(foodId);
+
+                // Assert
+                Assert.Null(actualFoodProduct);
+            }
+        }
 
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
