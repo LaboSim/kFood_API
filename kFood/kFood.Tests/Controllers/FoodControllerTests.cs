@@ -149,7 +149,12 @@ namespace kFood.Tests.Controllers
         {
             return new List<object[]>
             {
-                new object[] { new FoodProductDTO() { Name = "Food product test name 1", Description = "Sample description of food product" } }
+                new object[] { new FoodProductDTO()
+                {
+                    Name = "Food product test name 1",
+                    Description = "Sample description of food product",
+                    FoodProductImage = "R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==" // this image is a single pixel (black)
+                }}
             };
         }
 
@@ -159,7 +164,7 @@ namespace kFood.Tests.Controllers
             {
                 Name = foodProductDTO.Name,
                 Description = foodProductDTO.Description,
-                FoodImageURL = new Uri("http://www.contoso.com/") // only testing
+                FoodImageURL = new Uri("http://www.contoso.com/") // only testing TODO: change for real scenario
             };
         }
         #endregion

@@ -40,6 +40,8 @@ namespace kFood.Tests.Processors
             }
         }
 
+        // TODO GetSpecificFoodProduct_Unsuccess
+
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Success(FoodProductDTO foodProductDTO)
@@ -111,7 +113,12 @@ namespace kFood.Tests.Processors
         {
             return new List<object[]>
             {
-                new object[] { new FoodProductDTO() { Name = "Food product test name 1", Description = "Sample description of food product" } }
+                new object[] { new FoodProductDTO()
+                {
+                    Name = "Food product test name 1",
+                    Description = "Sample description of food product",
+                    FoodProductImage = "R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==" // this image is a single pixel (black)
+                } }
             };
         }
         #endregion
