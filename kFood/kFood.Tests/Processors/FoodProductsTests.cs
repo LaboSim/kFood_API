@@ -1,6 +1,7 @@
 ﻿using Autofac.Extras.Moq;
 using AutoMapper;
 using DataAccessLibrary.Interfaces;
+using DataModelLibrary.Conventers.Interfaces;
 using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.App_Start;
@@ -8,6 +9,8 @@ using kFood.Models;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using Xunit;
 
 namespace kFood.Tests.Processors
@@ -74,6 +77,10 @@ namespace kFood.Tests.Processors
                     .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
                     .Returns(true);
 
+                mock.Mock<IImageConverter>()
+                    .Setup(x => x.ConvertToImage(foodProductDTO.FoodProductImage))
+                    .Returns(GetSampleImage(foodProductDTO.FoodProductImage));
+
                 var cls = mock.Create<FoodProductProcessor>();
 
                 // Act
@@ -96,6 +103,10 @@ namespace kFood.Tests.Processors
                 mock.Mock<IFoodProductsDAO>()
                     .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
                     .Returns(false);
+
+                mock.Mock<IImageConverter>()
+                    .Setup(x => x.ConvertToImage(foodProductDTO.FoodProductImage))
+                    .Returns(GetSampleImage(foodProductDTO.FoodProductImage));
 
                 var cls = mock.Create<FoodProductProcessor>();
 
@@ -122,6 +133,23 @@ namespace kFood.Tests.Processors
                 Description = "Sample description of food product",
                 FoodImageURL = new Uri("http://localhost:51052/view/foodproductimage/1")
             };
+        }
+
+        /// <summary>
+        /// Get sample image
+        /// </summary>
+        /// <param name="foodProductImage">Sample image as BES64</param>
+        /// <returns>The instance of <see cref="Image"/></returns>
+        private Image GetSampleImage(string foodProductImage)
+        {
+            byte[] byteImage = Convert.FromBase64String(foodProductImage);
+            Image image;
+            using(MemoryStream ms = new MemoryStream(byteImage))
+            {
+                image = Image.FromStream(ms);
+            }
+
+            return image;
         }
 
         /// <summary>
