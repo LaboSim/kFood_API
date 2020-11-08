@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using DataAccessLibrary;
 using DataAccessLibrary.Interfaces;
+using DataModelLibrary.Conventers.Interfaces;
 using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.Models.Interfaces;
+using System.Drawing;
 
 namespace kFood.Models
 {
@@ -53,6 +55,14 @@ namespace kFood.Models
         public FoodProduct CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
             FoodProduct foodProduct = Mapper.Map<FoodProduct>(foodProductDTO);
+
+            /*
+             * Convert base 64 to image
+             * Put photo to foler
+             * Create URI to photo
+            */
+            IImageConverter imageConverter = new DataModelLibrary.Conventers.ImageConverter();
+            Image image = imageConverter.ConvertToImage(foodProductDTO.FoodProductImage);
 
             _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
             bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
