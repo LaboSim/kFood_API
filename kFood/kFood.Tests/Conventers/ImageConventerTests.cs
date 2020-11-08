@@ -1,9 +1,5 @@
-﻿using Autofac.Extras.Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataModelLibrary.Conventers;
+using DataModelLibrary.Conventers.Interfaces;
 using Xunit;
 
 namespace kFood.Tests.Conventers
@@ -12,7 +8,7 @@ namespace kFood.Tests.Conventers
     {
         [Theory]
         [InlineData("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==")]
-        public void ConvertBase64ToImage(string base64Photo)
+        public void ConvertBase64ToImage_Success(string base64Photo)
         {
             // Arrange
             IImageConverter imageConverter = new ImageConverter();
