@@ -44,7 +44,10 @@
   <ItemGroup>
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Converters\Interfaces\IImageConverter.cs" />
+    <Compile Include="Images\ImageHandler.cs" />
+    <Compile Include="Images\Interfaces\IImageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
