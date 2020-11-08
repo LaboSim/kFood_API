@@ -126,6 +126,10 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLogicLibrary\BusinessLogicLibrary.csproj">
+      <Project>{3E6A1768-3781-4817-992D-41BD79397A0A}</Project>
+      <Name>BusinessLogicLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj">
       <Project>{6b25250e-c43a-41e7-9813-59e8767ca2f5}</Project>
       <Name>DataAccessLibrary</Name>

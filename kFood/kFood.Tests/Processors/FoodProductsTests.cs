@@ -1,7 +1,7 @@
 ﻿using Autofac.Extras.Moq;
 using AutoMapper;
+using BusinessLogicLibrary.Converters.Interfaces;
 using DataAccessLibrary.Interfaces;
-using DataModelLibrary.Conventers.Interfaces;
 using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.App_Start;

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace DataModelLibrary.Conventers.Interfaces
+namespace BusinessLogicLibrary.Converters.Interfaces
 {
     /// <summary>
     /// The interface of image converter

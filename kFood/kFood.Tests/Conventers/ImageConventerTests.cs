@@ -1,5 +1,5 @@
-﻿using DataModelLibrary.Conventers;
-using DataModelLibrary.Conventers.Interfaces;
+﻿using BusinessLogicLibrary.Converters;
+using BusinessLogicLibrary.Converters.Interfaces;
 using Xunit;
 
 namespace kFood.Tests.Conventers

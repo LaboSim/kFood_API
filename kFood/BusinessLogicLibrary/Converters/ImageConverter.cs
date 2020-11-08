@@ -1,10 +1,10 @@
-﻿using System;
+﻿using BusinessLogicLibrary.Converters.Interfaces;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
-using DataModelLibrary.Conventers.Interfaces;
 
-namespace DataModelLibrary.Conventers
+namespace BusinessLogicLibrary.Converters
 {
     /// <summary>
     /// The image converter

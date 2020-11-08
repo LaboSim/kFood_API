@@ -288,6 +288,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLogicLibrary\BusinessLogicLibrary.csproj">
+      <Project>{3E6A1768-3781-4817-992D-41BD79397A0A}</Project>
+      <Name>BusinessLogicLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj">
       <Project>{6B25250E-C43A-41E7-9813-59E8767CA2F5}</Project>
       <Name>DataAccessLibrary</Name>
