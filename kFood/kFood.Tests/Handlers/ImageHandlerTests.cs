@@ -1,4 +1,5 @@
 ﻿using Autofac.Extras.Moq;
+using BusinessLogicLibrary.ConfigurationEngine;
 using BusinessLogicLibrary.Images;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace kFood.Tests.Handlers
             using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
-                mock.Mock<IkFoodEngine>()
+                mock.Mock<kFoodEngine>()
                     .Setup(x => x.GetTemporaryPath())
                     .Returns(tempPath);
 
