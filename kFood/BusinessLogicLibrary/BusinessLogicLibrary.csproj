@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationEngine\kFoodEngine.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Converters\Interfaces\IImageConverter.cs" />
     <Compile Include="Images\ImageHandler.cs" />
