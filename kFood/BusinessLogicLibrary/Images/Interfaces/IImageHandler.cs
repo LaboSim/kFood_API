@@ -8,7 +8,7 @@ namespace BusinessLogicLibrary.Images.Interfaces
     public interface IImageHandler
     {
         /// <summary>
-        /// Place temporary image in folder
+        /// The signature of method to place temporary image in folder
         /// </summary>
         /// <param name="image">The instance of temporary <see cref="Image"/></param>
         /// <returns>The filename</returns>
