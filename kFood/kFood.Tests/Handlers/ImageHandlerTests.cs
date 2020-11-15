@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Autofac.Extras.Moq;
+using BusinessLogicLibrary.Images;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace kFood.Tests.Handlers
@@ -15,7 +14,23 @@ namespace kFood.Tests.Handlers
         [MemberData(nameof(GetSampleImage))]
         public void SaveImage_Success(Image image)
         {
+            string tempPath = @"D:\Szymon\Temporary\";
 
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.GetTemporaryPath())
+                    .Returns(tempPath);
+
+                var cls = mock.Create<ImageHandler>();
+
+                // Act
+                var imageFile = cls.PlaceImageInFolder(image);
+
+                // Assert
+                Assert.True(File.Exists($@"{tempPath}{imageFile}.png"));
+            }
         }
 
         #region Helper methods
