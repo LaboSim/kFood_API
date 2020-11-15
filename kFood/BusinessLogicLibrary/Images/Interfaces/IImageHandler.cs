@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace BusinessLogicLibrary.Images.Interfaces
 {
+    /// <summary>
+    /// The interface of image handler
+    /// </summary>
     public interface IImageHandler
     {
+        /// <summary>
+        /// Place temporary image in folder
+        /// </summary>
+        /// <param name="image">The instance of temporary <see cref="Image"/></param>
+        /// <returns>The filename</returns>
+        string PlaceImageInFolder(Image image);
     }
 }
