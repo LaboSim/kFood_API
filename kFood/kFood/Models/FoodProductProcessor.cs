@@ -64,13 +64,16 @@ namespace kFood.Models
             IImageConverter imageConverter = new BusinessLogicLibrary.Converters.ImageConverter();
             Image image = imageConverter.ConvertToImage(foodProductDTO.FoodProductImage);
 
+            if(image != null)
+            {
+                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+                bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
 
-
-            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
-            bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
-
-            if (created)
-                return foodProduct;
+                if (created)
+                    return foodProduct;
+                else
+                    return (FoodProduct)null;
+            }
             else
                 return (FoodProduct)null;
         }
