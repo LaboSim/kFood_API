@@ -1,9 +1,8 @@
 ﻿using Autofac.Extras.Moq;
-using BusinessLogicLibrary.ConfigurationEngine;
+using BusinessLogicLibrary.ConfigurationEngine.Interfaces;
 using BusinessLogicLibrary.Images;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Configuration;
 using System.IO;
 using Xunit;
 
@@ -13,60 +12,52 @@ namespace kFood.Tests.Handlers
     {
         [Theory]
         [MemberData(nameof(GetSampleImage))]
-        public void SaveImage_Success(Image image)
+        public void SaveImage_Success(string base64Image)
         {
-            string tempPath = @"D:\Szymon\Temporary\";
+            string tempPath = ConfigurationManager.AppSettings["PathToTemporaryImage"];
 
             using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
-                mock.Mock<kFoodEngine>()
+                mock.Mock<IkFoodEngine>()
                     .Setup(x => x.GetTemporaryPath())
-                    .Returns(tempPath);
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
 
                 var cls = mock.Create<ImageHandler>();
 
                 // Act
-                var imageFile = cls.PlaceImageInFolder(image);
+                var pathImage = cls.SaveImageTemporarily(base64Image);
 
                 // Assert
-                Assert.True(File.Exists($@"{tempPath}{imageFile}.png"));
+                Assert.True(File.Exists($"{pathImage}"));
             }
         }
 
         #region Helper methods
         /// <summary>
-        /// Get sample image instance
+        /// Get sample image 
         /// </summary>
-        /// <returns>The collection of fake instance <see cref="Image"/></returns>
+        /// <returns>The collection of fake BASE64 string</returns>
         public static IEnumerable<object[]> GetSampleImage()
         {
             return new List<object[]>
             {
                 new object[]
                 {
-                    CreateSampleImage()
+                    GetSampleImageAsBase64()
                 }
             };
         }
 
         /// <summary>
-        /// Convert image as BASE64 string to image
+        /// Get sample BASE64 image from file
         /// </summary>
-        /// <returns>The instance of <see cref="Image"/></returns>
-        private static Image CreateSampleImage()
+        /// <returns>The image as BASE64</returns>
+        private static string GetSampleImageAsBase64()
         {
-            string base64Image = "R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw=="; // this image is a single pixel (black)
+            string testImage = ConfigurationManager.AppSettings["TestImage"];
 
-            byte[] byteImage = Convert.FromBase64String(base64Image);
-
-            Image image;
-            using(MemoryStream ms = new MemoryStream(byteImage))
-            {
-                image = Image.FromStream(ms);
-            }
-
-            return image;
+            return File.ReadAllText(testImage);
         }
         #endregion
     }
