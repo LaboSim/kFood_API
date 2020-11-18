@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using BusinessLogicLibrary.Converters.Interfaces;
+using BusinessLogicLibrary.Images;
+using BusinessLogicLibrary.Images.Interfaces;
 using DataAccessLibrary;
 using DataAccessLibrary.Interfaces;
 using DataModelLibrary.DTO.Foods;
@@ -57,23 +58,21 @@ namespace kFood.Models
             FoodProduct foodProduct = Mapper.Map<FoodProduct>(foodProductDTO);
 
             /*
-             * Convert base 64 to image
-             * Put photo to foler
+             * Convert base 64 to byte[] + 
+             * Put photo to foler +
              * Create URI to photo
+             * Save in database
+             * Remove temp image
             */
-            IImageConverter imageConverter = new BusinessLogicLibrary.Converters.ImageConverter();
-            Image image = imageConverter.ConvertToImage(foodProductDTO.FoodProductImage);
 
-            if(image != null)
-            {
-                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
-                bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
+            IImageHandler imageHandler = new ImageHandler();
+            string tempFilename = imageHandler.SaveImageTemporarily(foodProductDTO.FoodProductImage);
 
-                if (created)
-                    return foodProduct;
-                else
-                    return (FoodProduct)null;
-            }
+            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+            bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
+
+            if (created)
+                return foodProduct;
             else
                 return (FoodProduct)null;
         }
