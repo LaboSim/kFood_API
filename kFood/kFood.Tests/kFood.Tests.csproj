@@ -110,7 +110,6 @@
   <ItemGroup>
     <Compile Include="Controllers\FoodControllerTests.cs" />
     <Compile Include="Controllers\ImageControllerTests.cs" />
-    <Compile Include="Conventers\ImageConventerTests.cs" />
     <Compile Include="DAO\DataAccessBuilderTests.cs" />
     <Compile Include="Handlers\ImageHandlerTests.cs" />
     <Compile Include="Processors\FoodProductsTests.cs" />
