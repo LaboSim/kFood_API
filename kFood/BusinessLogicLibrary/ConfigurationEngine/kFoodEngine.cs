@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogicLibrary.ConfigurationEngine.Interfaces;
+using System;
 using System.Configuration;
 
 namespace BusinessLogicLibrary.ConfigurationEngine
@@ -6,7 +7,7 @@ namespace BusinessLogicLibrary.ConfigurationEngine
     /// <summary>
     /// The kFoodEngine to handle app configuration
     /// </summary>
-    public class kFoodEngine
+    public class kFoodEngine : IkFoodEngine
     {
         /// <summary>
         /// Get the path from app configuration to save a temporary file 
