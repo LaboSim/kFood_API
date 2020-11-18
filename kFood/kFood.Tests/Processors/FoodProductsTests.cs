@@ -1,6 +1,6 @@
 ﻿using Autofac.Extras.Moq;
 using AutoMapper;
-using BusinessLogicLibrary.Converters.Interfaces;
+using BusinessLogicLibrary.Images.Interfaces;
 using DataAccessLibrary.Interfaces;
 using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
@@ -9,6 +9,7 @@ using kFood.Models;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.IO;
 using Xunit;
@@ -77,9 +78,9 @@ namespace kFood.Tests.Processors
                     .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
                     .Returns(true);
 
-                mock.Mock<IImageConverter>()
-                    .Setup(x => x.ConvertToImage(foodProductDTO.FoodProductImage))
-                    .Returns(GetSampleImage(foodProductDTO.FoodProductImage));
+                mock.Mock<IImageHandler>()
+                   .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                   .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".","")}");
 
                 var cls = mock.Create<FoodProductProcessor>();
 
@@ -104,9 +105,9 @@ namespace kFood.Tests.Processors
                     .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
                     .Returns(false);
 
-                mock.Mock<IImageConverter>()
-                    .Setup(x => x.ConvertToImage(foodProductDTO.FoodProductImage))
-                    .Returns(GetSampleImage(foodProductDTO.FoodProductImage));
+                mock.Mock<IImageHandler>()
+                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
 
                 var cls = mock.Create<FoodProductProcessor>();
 
@@ -136,23 +137,6 @@ namespace kFood.Tests.Processors
         }
 
         /// <summary>
-        /// Get sample image
-        /// </summary>
-        /// <param name="foodProductImage">Sample image as BES64</param>
-        /// <returns>The instance of <see cref="Image"/></returns>
-        private Image GetSampleImage(string foodProductImage)
-        {
-            byte[] byteImage = Convert.FromBase64String(foodProductImage);
-            Image image;
-            using(MemoryStream ms = new MemoryStream(byteImage))
-            {
-                image = Image.FromStream(ms);
-            }
-
-            return image;
-        }
-
-        /// <summary>
         /// Create collection of <see cref="FoodProductDTO"/> to pass to processor as argument
         /// </summary>
         /// <returns>The collection of fake instance <see cref="FoodProductDTO"/></returns>
@@ -164,9 +148,20 @@ namespace kFood.Tests.Processors
                 {
                     Name = "Food product test name 1",
                     Description = "Sample description of food product",
-                    FoodProductImage = "R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==" // this image is a single pixel (black)
+                    FoodProductImage = GetSampleImageAsBASE64() 
                 } }
             };
+        }
+
+        /// <summary>
+        /// Get sample image as BASE64 from configuration file
+        /// </summary>
+        /// <returns>The image as BASE64</returns>
+        private static string GetSampleImageAsBASE64()
+        {
+            string testImage = ConfigurationManager.AppSettings["TestImage"];
+
+            return File.ReadAllText(testImage);
         }
         #endregion
     }
