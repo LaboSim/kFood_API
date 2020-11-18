@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace BusinessLogicLibrary.Images.Interfaces
+﻿namespace BusinessLogicLibrary.Images.Interfaces
 {
     /// <summary>
     /// The interface of image handler
@@ -8,10 +6,10 @@ namespace BusinessLogicLibrary.Images.Interfaces
     public interface IImageHandler
     {
         /// <summary>
-        /// The signature of method to place temporary image in folder
+        /// The signature of method to save an image temporarily
         /// </summary>
-        /// <param name="image">The instance of temporary <see cref="Image"/></param>
+        /// <param name="base64Image">The image as BASE64 string</param>
         /// <returns>The filename</returns>
-        string PlaceImageInFolder(Image image);
+        string SaveImageTemporarily(string base64Image);
     }
 }
