@@ -1,8 +1,10 @@
 ﻿using DataModelLibrary.DTO.Foods;
+using DataModelLibrary.Messages;
 using DataModelLibrary.Models.Foods;
 using kFood.Models;
 using kFood.Models.Interfaces;
 using Serilog;
+using System;
 using System.Web.Http;
 
 namespace kFood.Controllers
@@ -47,13 +49,20 @@ namespace kFood.Controllers
         [Route("getFood/{id}")]
         public IHttpActionResult GetFood(int id)
         {
-            _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
-            FoodProduct foodProduct = _foodProductProcessor.GetSpecificFoodProduct(id);
+            try
+            {
+                _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
+                FoodProduct foodProduct = _foodProductProcessor.GetSpecificFoodProduct(id);
 
-            if (foodProduct != null)
-                return Ok(foodProduct);
+                if (foodProduct != null)
+                    return Ok(foodProduct);
 
-            return NotFound();
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
