@@ -76,6 +76,27 @@ namespace kFood.Tests.Controllers
         }
 
         [Theory]
+        [InlineData(4)]
+        public void GetFoodProductAboutSpecificId_Exception(int foodId)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductProcessor>()
+                    .Setup(x => x.GetSpecificFoodProduct(foodId))
+                    .Throws(new Exception());
+
+                var cls = mock.Create<FoodController>();
+
+                // Act
+                IHttpActionResult actualActionResult = cls.GetFood(foodId);
+
+                // Assert
+                Assert.IsType<BadRequestResult>(actualActionResult);
+            }
+        }
+
+        [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Successful(FoodProductDTO foodProductDTO)
         {
