@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\Foods\FoodProductDTO.cs" />
+    <Compile Include="Messages\MessageContainer.cs" />
     <Compile Include="Models\Foods\FoodProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
