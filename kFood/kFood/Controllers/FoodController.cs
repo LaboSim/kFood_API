@@ -2,6 +2,7 @@
 using DataModelLibrary.Models.Foods;
 using kFood.Models;
 using kFood.Models.Interfaces;
+using Serilog;
 using System.Web.Http;
 
 namespace kFood.Controllers
@@ -13,6 +14,7 @@ namespace kFood.Controllers
     {
         #region Private Members
         private IFoodProductProcessor _foodProductProcessor;
+        private ILogger _logger;
         #endregion
 
 
@@ -22,6 +24,7 @@ namespace kFood.Controllers
         /// </summary>
         public FoodController()
         {
+            this._logger = Log.Logger;
         }
 
         /// <summary>
@@ -31,6 +34,7 @@ namespace kFood.Controllers
         public FoodController(IFoodProductProcessor foodProductProcessor) 
         {
             this._foodProductProcessor = foodProductProcessor;
+            this._logger = Log.Logger;
         } 
         #endregion
 
