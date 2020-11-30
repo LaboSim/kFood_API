@@ -5,6 +5,7 @@ using kFood.Models;
 using kFood.Models.Interfaces;
 using Serilog;
 using System;
+using System.Reflection;
 using System.Web.Http;
 
 namespace kFood.Controllers
@@ -49,18 +50,26 @@ namespace kFood.Controllers
         [Route("getFood/{id}")]
         public IHttpActionResult GetFood(int id)
         {
+            _logger.Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
+
             try
             {
                 _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
                 FoodProduct foodProduct = _foodProductProcessor.GetSpecificFoodProduct(id);
 
                 if (foodProduct != null)
+                {
                     return Ok(foodProduct);
-
-                return NotFound();
+                }
+                else
+                {
+                    _logger.Warning(MessageContainer.EndActionNotFoundItem, MethodBase.GetCurrentMethod().Name, id);
+                    return NotFound();
+                }
             }
             catch (Exception ex)
             {
+                _logger.Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
                 return BadRequest();
             }
         }
