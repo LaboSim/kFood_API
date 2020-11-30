@@ -2,7 +2,7 @@
 {
     public static class MessageContainer
     {
-        #region Actions
+        #region Actions (controller)
         public const string StartAction = "Src:{Source} -> Start action \"{actionName}\"";
         public const string EndActionSuccess = "Src:{Source} -> End action success: \"{actionName}\"";
         public const string EndActionNotFoundItem = "Src:{Source} -> End action \"{actionName}\". Not found item for ID: \"{id}\"";
@@ -10,7 +10,15 @@
         #endregion
 
         #region Outputs
-        public const string OutputActionJSON = "OUTPUT: {outputJson}"; 
+        public const string OutputActionJSON = "OUTPUT: {outputJson}";
+        #endregion
+
+        #region Methods
+        public const string CalledMethod = "Called: \"{methodName}\"";
+        #endregion
+
+        #region Exceptions
+        public const string CaughtException = "An exception was caught. Throw higher.";
         #endregion
     }
 }
