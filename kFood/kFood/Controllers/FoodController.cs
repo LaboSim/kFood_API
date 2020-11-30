@@ -1,4 +1,5 @@
-﻿using DataModelLibrary.DTO.Foods;
+﻿using BusinessLogicLibrary;
+using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Messages;
 using DataModelLibrary.Models.Foods;
 using kFood.Models;
@@ -51,11 +52,11 @@ namespace kFood.Controllers
         [Route("getFood/{id}")]
         public IHttpActionResult GetFood(int id)
         {
-            _logger.Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
+            _logger.Information(MessageContainer.StartAction, LogSource.FoodController, MethodBase.GetCurrentMethod().Name);
 
             try
             {
-                _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
+                _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor(_logger);
                 FoodProduct foodProduct = _foodProductProcessor.GetSpecificFoodProduct(id);
 
                 if (foodProduct != null)
@@ -89,7 +90,7 @@ namespace kFood.Controllers
             if(foodProductDTO == null)
                 return BadRequest();
 
-            _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
+            _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor(_logger);
 
             FoodProduct foodProduct = _foodProductProcessor.CreateFoodProduct(foodProductDTO);
             if (foodProduct != null)
