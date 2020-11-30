@@ -4,10 +4,12 @@ using BusinessLogicLibrary.Images.Interfaces;
 using DataAccessLibrary;
 using DataAccessLibrary.Interfaces;
 using DataModelLibrary.DTO.Foods;
+using DataModelLibrary.Messages;
 using DataModelLibrary.Models.Foods;
 using kFood.Models.Interfaces;
 using Serilog;
 using System;
+using System.Reflection;
 
 namespace kFood.Models
 {
@@ -50,6 +52,8 @@ namespace kFood.Models
         /// <returns>The instance of <see cref="FoodProduct"/> if exist</returns>
         public FoodProduct GetSpecificFoodProduct(int foodId)
         {
+            _logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
+
             try
             {
                 _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
@@ -57,6 +61,7 @@ namespace kFood.Models
             }
             catch(Exception ex)
             {
+                _logger.Error(MessageContainer.CaughtException);
                 throw ex;
             }
         }
