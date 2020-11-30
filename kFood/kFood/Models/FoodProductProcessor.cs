@@ -6,7 +6,8 @@ using DataAccessLibrary.Interfaces;
 using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.Models.Interfaces;
-using System.Drawing;
+using Serilog;
+using System;
 
 namespace kFood.Models
 {
@@ -17,23 +18,28 @@ namespace kFood.Models
     {
         #region Private Members
         private IFoodProductsDAO _foodProductsDAO;
+        private ILogger _logger;
         #endregion
 
         #region Constructors
         /// <summary>
         /// The default constructor
         /// </summary>
-        public FoodProductProcessor()
+        /// <param name="logger">The instance of <see cref="ILogger"/></param>
+        public FoodProductProcessor(ILogger logger)
         {
+            this._logger = logger;
         }
 
         /// <summary>
         /// The parameterized constructor for unit tests
         /// </summary>
         /// <param name="foodProductsDAO">The injected instance of <see cref="IFoodProductsDAO"/> to unit tests</param>
-        public FoodProductProcessor(IFoodProductsDAO foodProductsDAO)
+        /// <param name="logger">The instance of <see cref="ILogger"/></param>
+        public FoodProductProcessor(IFoodProductsDAO foodProductsDAO, ILogger logger)
         {
             this._foodProductsDAO = foodProductsDAO;
+            this._logger = logger;
         }
         #endregion
 
@@ -44,8 +50,15 @@ namespace kFood.Models
         /// <returns>The instance of <see cref="FoodProduct"/> if exist</returns>
         public FoodProduct GetSpecificFoodProduct(int foodId)
         {
-            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
-            return _foodProductsDAO.GetFoodProduct(foodId);
+            try
+            {
+                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+                return _foodProductsDAO.GetFoodProduct(foodId);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
