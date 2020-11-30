@@ -3,6 +3,8 @@
     public enum LogSource
     {
         FoodController,
-        ImageController
+        ImageController,
+        FoodProductProcessor,
+        ImageProcessor
     }
 }
