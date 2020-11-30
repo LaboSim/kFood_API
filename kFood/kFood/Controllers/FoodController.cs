@@ -3,6 +3,7 @@ using DataModelLibrary.Messages;
 using DataModelLibrary.Models.Foods;
 using kFood.Models;
 using kFood.Models.Interfaces;
+using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.Reflection;
@@ -59,6 +60,8 @@ namespace kFood.Controllers
 
                 if (foodProduct != null)
                 {
+                    _logger.Information(MessageContainer.OutputActionJSON, JsonConvert.SerializeObject(foodProduct));
+                    _logger.Information(MessageContainer.EndActionSuccess, MethodBase.GetCurrentMethod().Name);
                     return Ok(foodProduct);
                 }
                 else
