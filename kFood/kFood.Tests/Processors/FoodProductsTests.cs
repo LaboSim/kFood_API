@@ -66,6 +66,28 @@ namespace kFood.Tests.Processors
         }
 
         [Theory]
+        [InlineData(2)]
+        public void GetSpecificFoodProduct_Exception(int foodId)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.GetFoodProduct(foodId))
+                    .Throws(new Exception());
+
+                var cls = mock.Create<FoodProductProcessor>();
+
+                // Act
+                //FoodProduct foodProduct = cls.GetSpecificFoodProduct(foodId);
+                var ex = Record.Exception(() => cls.GetSpecificFoodProduct(foodId));
+
+                // Assert
+                Assert.IsType<Exception>(ex);
+            }
+        }
+
+        [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Success(FoodProductDTO foodProductDTO)
         {
