@@ -13,9 +13,9 @@ namespace kFood.App_Start
         public static void ConfigureLogging()
         {
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(@"D:\Szymon\Programowanie\Logs\testing.txt", 
+                .WriteTo.File(@"D:\Szymon\Programowanie\Logs\kFoodAPI.txt", 
                     rollingInterval: RollingInterval.Day, 
-                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
             Log.Logger.Information("*** START APPLICATION ***");
         }
