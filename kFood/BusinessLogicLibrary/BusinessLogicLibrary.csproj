@@ -47,7 +47,6 @@
     <Compile Include="ConfigurationEngine\kFoodEngine.cs" />
     <Compile Include="Images\ImageHandler.cs" />
     <Compile Include="Images\Interfaces\IImageHandler.cs" />
-    <Compile Include="LogSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
