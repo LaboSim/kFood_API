@@ -1,5 +1,4 @@
-﻿using BusinessLogicLibrary;
-using DataModelLibrary.DTO.Foods;
+﻿using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Messages;
 using DataModelLibrary.Models.Foods;
 using kFood.Models;
@@ -52,7 +51,7 @@ namespace kFood.Controllers
         [Route("getFood/{id}")]
         public IHttpActionResult GetFood(int id)
         {
-            _logger.Information(MessageContainer.StartAction, LogSource.FoodController, MethodBase.GetCurrentMethod().Name);
+            _logger.ForContext<FoodController>().Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
 
             try
             {
@@ -61,19 +60,19 @@ namespace kFood.Controllers
 
                 if (foodProduct != null)
                 {
-                    _logger.Information(MessageContainer.OutputActionJSON, JsonConvert.SerializeObject(foodProduct));
-                    _logger.Information(MessageContainer.EndActionSuccess, MethodBase.GetCurrentMethod().Name);
+                    _logger.ForContext<FoodController>().Information(MessageContainer.OutputActionJSON, JsonConvert.SerializeObject(foodProduct));
+                    _logger.ForContext<FoodController>().Information(MessageContainer.EndActionSuccess, MethodBase.GetCurrentMethod().Name);
                     return Ok(foodProduct);
                 }
                 else
                 {
-                    _logger.Warning(MessageContainer.EndActionNotFoundItem, MethodBase.GetCurrentMethod().Name, id);
+                    _logger.ForContext<FoodController>().Warning(MessageContainer.EndActionNotFoundItem, MethodBase.GetCurrentMethod().Name, id);
                     return NotFound();
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
+                _logger.ForContext<FoodController>().Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
                 return BadRequest();
             }
         }
