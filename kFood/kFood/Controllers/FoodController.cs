@@ -14,6 +14,7 @@ namespace kFood.Controllers
     /// <summary>
     /// The main controller for food operation
     /// </summary>
+    [RoutePrefix("food")]
     public class FoodController : ApiController
     {
         #region Private Members
