@@ -56,7 +56,7 @@ namespace kFood.Controllers
 
             try
             {
-                _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor(_logger);
+                _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
                 FoodProduct foodProduct = _foodProductProcessor.GetSpecificFoodProduct(id);
 
                 if (foodProduct != null)
@@ -90,7 +90,7 @@ namespace kFood.Controllers
             if(foodProductDTO == null)
                 return BadRequest();
 
-            _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor(_logger);
+            _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
 
             FoodProduct foodProduct = _foodProductProcessor.CreateFoodProduct(foodProductDTO);
             if (foodProduct != null)
