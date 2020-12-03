@@ -17,7 +17,7 @@ namespace kFood.App_Start
                     rollingInterval: RollingInterval.Day, 
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
-            Log.Logger.Information("*** START APPLICATION ***");
+            Log.Logger.ForContext<LogConfig>().Information("*** START APPLICATION ***");
         }
     }
 }
