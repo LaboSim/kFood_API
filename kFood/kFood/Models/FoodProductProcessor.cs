@@ -28,21 +28,19 @@ namespace kFood.Models
         /// <summary>
         /// The default constructor
         /// </summary>
-        /// <param name="logger">The instance of <see cref="ILogger"/></param>
-        public FoodProductProcessor(ILogger logger)
+        public FoodProductProcessor()
         {
-            this._logger = logger;
+            this._logger = Log.Logger;
         }
 
         /// <summary>
         /// The parameterized constructor for unit tests
         /// </summary>
         /// <param name="foodProductsDAO">The injected instance of <see cref="IFoodProductsDAO"/> to unit tests</param>
-        /// <param name="logger">The instance of <see cref="ILogger"/></param>
-        public FoodProductProcessor(IFoodProductsDAO foodProductsDAO, ILogger logger)
+        public FoodProductProcessor(IFoodProductsDAO foodProductsDAO)
         {
             this._foodProductsDAO = foodProductsDAO;
-            this._logger = logger;
+            this._logger = Log.Logger;
         }
         #endregion
 
