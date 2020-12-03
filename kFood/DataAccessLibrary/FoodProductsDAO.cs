@@ -10,7 +10,7 @@ using System.Reflection;
 namespace DataAccessLibrary
 {
 	/// <summary>
-	/// 
+	/// The food products data access object
 	/// </summary>
 	public class FoodProductsDAO : DataAccessBuilder, IFoodProductsDAO
 	{
