@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLogicLibrary;
 using BusinessLogicLibrary.Images;
 using BusinessLogicLibrary.Images.Interfaces;
 using DataAccessLibrary;
@@ -52,16 +53,16 @@ namespace kFood.Models
         /// <returns>The instance of <see cref="FoodProduct"/> if exist</returns>
         public FoodProduct GetSpecificFoodProduct(int foodId)
         {
-            _logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
+            _logger.ForContext<FoodProductProcessor>().Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
 
             try
             {
-                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO(_logger);
                 return _foodProductsDAO.GetFoodProduct(foodId);
             }
             catch(Exception ex)
             {
-                _logger.Error(MessageContainer.CaughtException);
+                _logger.ForContext<FoodProductProcessor>().Error(MessageContainer.CaughtException);
                 throw ex;
             }
         }
@@ -86,7 +87,7 @@ namespace kFood.Models
             IImageHandler imageHandler = new ImageHandler();
             string tempFilename = imageHandler.SaveImageTemporarily(foodProductDTO.FoodProductImage);
 
-            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO(_logger);
             bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
 
             if (created)
