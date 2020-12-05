@@ -14,7 +14,9 @@ namespace DataAccessLibrary
 	/// </summary>
 	public class FoodProductsDAO : DataAccessBuilder, IFoodProductsDAO
 	{
-		private ILogger _logger;
+		#region Private Members
+		private ILogger _logger; 
+		#endregion
 
 		#region Constructors
 		/// <summary>
