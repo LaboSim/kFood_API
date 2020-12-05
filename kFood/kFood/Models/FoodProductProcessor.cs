@@ -54,7 +54,7 @@ namespace kFood.Models
 
             try
             {
-                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO(_logger);
+                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
                 return _foodProductsDAO.GetFoodProduct(foodId);
             }
             catch(Exception ex)
@@ -84,7 +84,7 @@ namespace kFood.Models
             IImageHandler imageHandler = new ImageHandler();
             string tempFilename = imageHandler.SaveImageTemporarily(foodProductDTO.FoodProductImage);
 
-            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO(_logger);
+            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
             bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
 
             if (created)
