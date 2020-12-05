@@ -67,10 +67,12 @@ namespace DataAccessLibrary
 			}
 			catch(SqlException ex)
 			{
+				_logger.ForContext<FoodProductsDAO>().Error(MessageContainer.CaughtException);
 				throw ex;
 			}
 			catch (Exception ex)
 			{
+				_logger.ForContext<FoodProductsDAO>().Error(MessageContainer.CaughtException);
 				throw ex;
 			}
 		}
