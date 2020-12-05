@@ -49,7 +49,7 @@ namespace kFood.Controllers
         /// <param name="id">The food product identifier</param>
         /// <returns>The information about specific food product</returns>
         [HttpGet]
-        [Route("getFood/{id}")]
+        [Route("getFood/{id:int:min(1)}")]
         public IHttpActionResult GetFood(int id)
         {
             _logger.ForContext<FoodController>().Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
