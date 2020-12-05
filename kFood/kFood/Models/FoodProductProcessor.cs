@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BusinessLogicLibrary;
 using BusinessLogicLibrary.Images;
 using BusinessLogicLibrary.Images.Interfaces;
 using DataAccessLibrary;
