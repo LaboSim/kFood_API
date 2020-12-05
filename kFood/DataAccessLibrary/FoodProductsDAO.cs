@@ -22,9 +22,9 @@ namespace DataAccessLibrary
 		/// <summary>
 		/// Default constructor
 		/// </summary>
-		public FoodProductsDAO(ILogger logger) : base()
+		public FoodProductsDAO() : base()
 		{
-			this._logger = logger;
+			this._logger = Log.Logger;
 		}
 		#endregion
 
