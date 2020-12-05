@@ -71,7 +71,6 @@ namespace DataAccessLibrary
 			}
 			catch (Exception ex)
 			{
-				// TODO add logging + comment
 				throw ex;
 			}
 		}
