@@ -57,6 +57,7 @@ namespace DataAccessLibrary
 							{
 								Id = foodId,
 								Name = Convert.ToString(reader["Name"]),
+								Description = Convert.ToString(reader["Description"]),
 								FoodImageURL = new Uri(Convert.ToString(reader["FoodImageUrl"]))
 							};
 							return foodProduct;
