@@ -13,6 +13,10 @@
         public const string EndActionError = "End action \"{actionName}\". Occured exception";
         #endregion
 
+        #region Inputs
+        public const string InputActionJSON = "INPUT: {inputJson}";
+        #endregion
+
         #region Outputs
         public const string OutputActionJSON = "OUTPUT: {outputJson}";
         #endregion
