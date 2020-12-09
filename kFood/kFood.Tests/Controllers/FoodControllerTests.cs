@@ -95,14 +95,15 @@ namespace kFood.Tests.Controllers
                 // Assert
                 Assert.IsType<BadRequestResult>(actualActionResult);
             }
-        } 
+        }
         #endregion
 
+        #region CREATE FOOD PRODUCT - Ok/Conflict/BadRequest
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Successful(FoodProductDTO foodProductDTO)
         {
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IFoodProductProcessor>()
@@ -130,7 +131,7 @@ namespace kFood.Tests.Controllers
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Conflict(FoodProductDTO foodProductDTO)
         {
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IFoodProductProcessor>()
@@ -150,7 +151,7 @@ namespace kFood.Tests.Controllers
         [Fact]
         public void CreateFoodProduct_BadRequest()
         {
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 var cls = mock.Create<FoodController>();
@@ -161,7 +162,8 @@ namespace kFood.Tests.Controllers
                 // Assert
                 Assert.IsType<BadRequestResult>(httpActionResult);
             }
-        }
+        } 
+        #endregion
 
         #region Helper methods
         /// <summary>
