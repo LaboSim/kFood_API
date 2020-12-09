@@ -14,6 +14,7 @@ namespace kFood.Tests.Controllers
 {
     public class FoodControllerTests
     {
+        #region GET SPECIFIC FOOD PRODUCT - Ok/NotFound/Exception
         [Theory]
         [InlineData(4)]
         public void GetFoodProductAboutSpecificId_Result_Ok(int foodId)
@@ -79,7 +80,7 @@ namespace kFood.Tests.Controllers
         [InlineData(4)]
         public void GetFoodProductAboutSpecificId_Exception(int foodId)
         {
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IFoodProductProcessor>()
@@ -94,7 +95,8 @@ namespace kFood.Tests.Controllers
                 // Assert
                 Assert.IsType<BadRequestResult>(actualActionResult);
             }
-        }
+        } 
+        #endregion
 
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
