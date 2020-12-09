@@ -89,6 +89,7 @@ namespace kFood.Controllers
         public IHttpActionResult CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
             _logger.ForContext<FoodController>().Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
+            _logger.ForContext<FoodController>().Information(MessageContainer.InputActionJSON, JsonConvert.SerializeObject(foodProductDTO));
 
             if (foodProductDTO == null)
             {
