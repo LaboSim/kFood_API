@@ -18,6 +18,7 @@ namespace kFood.Tests.Processors
 {
     public class FoodProductsTests
     {
+        #region GET SPECIFIC FOOD PRODUCT - Ok/Unsuccess/Exception
         [Theory]
         [InlineData(7)]
         public void GetSpecificFoodProduct_Success(int foodId)
@@ -48,7 +49,7 @@ namespace kFood.Tests.Processors
         [InlineData(7)]
         public void GetSpecificFoodProduct_Unsuccess(int foodId)
         {
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
@@ -69,7 +70,7 @@ namespace kFood.Tests.Processors
         [InlineData(2)]
         public void GetSpecificFoodProduct_Exception(int foodId)
         {
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
@@ -85,7 +86,8 @@ namespace kFood.Tests.Processors
                 // Assert
                 Assert.IsType<Exception>(ex);
             }
-        }
+        } 
+        #endregion
 
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
