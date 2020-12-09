@@ -18,7 +18,7 @@ namespace kFood.Tests.Processors
 {
     public class FoodProductsTests
     {
-        #region GET SPECIFIC FOOD PRODUCT - Ok/Unsuccess/Exception
+        #region GET SPECIFIC FOOD PRODUCT - Ok/NotFound/Exception
         [Theory]
         [InlineData(7)]
         public void GetSpecificFoodProduct_Success(int foodId)
@@ -47,7 +47,7 @@ namespace kFood.Tests.Processors
 
         [Theory]
         [InlineData(7)]
-        public void GetSpecificFoodProduct_Unsuccess(int foodId)
+        public void GetSpecificFoodProduct_NotFound(int foodId)
         {
             using (var mock = AutoMock.GetLoose())
             {
@@ -80,7 +80,6 @@ namespace kFood.Tests.Processors
                 var cls = mock.Create<FoodProductProcessor>();
 
                 // Act
-                //FoodProduct foodProduct = cls.GetSpecificFoodProduct(foodId);
                 var ex = Record.Exception(() => cls.GetSpecificFoodProduct(foodId));
 
                 // Assert
