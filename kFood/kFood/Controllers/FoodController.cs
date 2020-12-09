@@ -85,18 +85,35 @@ namespace kFood.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("createFoodProduct")]
+        [NonAction] // - Unavailable DEV 1.0
         public IHttpActionResult CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
-            if(foodProductDTO == null)
+            _logger.ForContext<FoodController>().Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
+
+            if (foodProductDTO == null)
+            {
+                _logger.ForContext<FoodController>().Warning(MessageContainer.EmptyParam, MethodBase.GetCurrentMethod().Name);
                 return BadRequest();
-
+            }
+                
             _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
+            try
+            {
+                FoodProduct foodProduct = _foodProductProcessor.CreateFoodProduct(foodProductDTO);
+                if (foodProduct != null)
+                {
+                    _logger.ForContext<FoodController>().Information(MessageContainer.EndActionResourceCreated, MethodBase.GetCurrentMethod().Name);
+                    return Created<FoodProduct>(foodProduct.FoodImageURL, foodProduct);
+                }
 
-            FoodProduct foodProduct = _foodProductProcessor.CreateFoodProduct(foodProductDTO);
-            if (foodProduct != null)
-                return Created<FoodProduct>(foodProduct.FoodImageURL, foodProduct);
-
-            return Conflict();
+                _logger.ForContext<FoodController>().Warning(MessageContainer.EndActionResourceCreated, MethodBase.GetCurrentMethod().Name);
+                return Conflict();
+            }
+            catch(Exception ex)
+            {
+                _logger.ForContext<FoodController>().Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
         }
     }
 }
