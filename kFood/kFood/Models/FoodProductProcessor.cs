@@ -71,6 +71,8 @@ namespace kFood.Models
         /// <returns>The instance of <see cref="FoodProduct"/> if adding resource was succeeded</returns>
         public FoodProduct CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
+            _logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
+
             FoodProduct foodProduct = Mapper.Map<FoodProduct>(foodProductDTO);
 
             /*
@@ -80,17 +82,24 @@ namespace kFood.Models
              * Save in database
              * Remove temp image
             */
+            try
+            {
+                IImageHandler imageHandler = new ImageHandler();
+                string tempFilename = imageHandler.SaveImageTemporarily(foodProductDTO.FoodProductImage);
 
-            IImageHandler imageHandler = new ImageHandler();
-            string tempFilename = imageHandler.SaveImageTemporarily(foodProductDTO.FoodProductImage);
+                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+                bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
 
-            _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
-            bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
-
-            if (created)
-                return foodProduct;
-            else
-                return (FoodProduct)null;
+                if (created)
+                    return foodProduct;
+                else
+                    return (FoodProduct)null;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
         }
     }
 }
