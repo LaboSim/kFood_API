@@ -57,10 +57,6 @@ namespace kFood.Tests.Processors
         }
         #endregion
 
-        #region SAVE image as temporary file - Success/ValidBase64/InvalidBase64/EmptyTempPath/Error
-
-        #endregion
-
         #region Helper methods
         /// <summary>
         /// Get byte array imitate some image

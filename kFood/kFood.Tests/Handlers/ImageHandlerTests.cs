@@ -10,28 +10,51 @@ namespace kFood.Tests.Handlers
 {
     public class ImageHandlerTests
     {
+        #region SAVE image as temporary file - Success/InvalidBase64/EmptyTempPath/Error
         [Theory]
         [MemberData(nameof(GetSampleImage))]
         public void SaveImage_Success(string base64Image)
         {
-            string tempPath = ConfigurationManager.AppSettings["PathToTemporaryImage"];
+            //string tempPath = ConfigurationManager.AppSettings["PathToTemporaryImage"];
 
             using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IkFoodEngine>()
                     .Setup(x => x.GetTemporaryPath())
-                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}");
 
-                var cls = mock.Create<ImageHandler>();
+                var imageHandler = mock.Create<ImageHandler>();
 
                 // Act
-                var pathImage = cls.SaveImageTemporarily(base64Image);
+                var pathImage = imageHandler.SaveImageTemporarily(base64Image);
 
                 // Assert
                 Assert.True(File.Exists($"{pathImage}"));
             }
         }
+
+        [Theory]
+        [InlineData("Testi23ngImage1213Testi23ngImage1213=")]
+        public void SaveImage_InvalidBase64(string invalidBase64Image)
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.GetTemporaryPath())
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}");
+
+                var imageHandler = mock.Create<ImageHandler>();
+
+                // Act
+                string imagePath = imageHandler.SaveImageTemporarily(invalidBase64Image);
+
+                // Assert
+                Assert.True(string.IsNullOrEmpty(imagePath));
+            }
+        }
+        #endregion
 
         #region Helper methods
         /// <summary>
