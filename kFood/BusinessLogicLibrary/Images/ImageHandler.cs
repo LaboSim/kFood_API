@@ -1,10 +1,13 @@
 ﻿using BusinessLogicLibrary.ConfigurationEngine;
 using BusinessLogicLibrary.ConfigurationEngine.Interfaces;
 using BusinessLogicLibrary.Images.Interfaces;
+using DataModelLibrary.Messages;
+using Serilog;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace BusinessLogicLibrary.Images
@@ -16,6 +19,17 @@ namespace BusinessLogicLibrary.Images
     {
         #region Private Members
         private IkFoodEngine _engine;
+        private ILogger _logger;
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public ImageHandler()
+        {
+            this._logger = Log.Logger.ForContext<ImageHandler>();
+        } 
         #endregion
 
         /// <summary>
@@ -25,16 +39,23 @@ namespace BusinessLogicLibrary.Images
         /// <returns>The filename</returns>
         public string SaveImageTemporarily(string base64Image)
         {
+            _logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
+
             if (ValidateBase64(base64Image))
             {
+                _logger.Information(MessageContainer.Base64Valid);
+
                 byte[] byteImage = Convert.FromBase64String(base64Image);
                 try
                 {
                     _engine = _engine ?? new kFoodEngine();
                     string path = _engine.GetTemporaryPath();
                     if (string.IsNullOrEmpty(path))
-                        throw new Exception(""); // TODO Error Message
-
+                    {
+                        _logger.Fatal(MessageContainer.EmptyPath);
+                        throw new Exception(MessageContainer.EmptyPath); 
+                    }
+                        
                     Image image;
                     string pathImage = $"{path}{Path.GetRandomFileName().Replace(".", "")}.png";
 
@@ -44,14 +65,17 @@ namespace BusinessLogicLibrary.Images
                         image.Save($"{pathImage}", ImageFormat.Png);
                     }
 
+                    _logger.Information(MessageContainer.TempImagePath, pathImage);
                     return pathImage;
                 }
                 catch(Exception ex)
                 {
-                    return string.Empty;
+                    _logger.Error(MessageContainer.CaughtException);
+                    throw ex;
                 }
             }
 
+            _logger.Warning(MessageContainer.Base64Invalid);
             return string.Empty;
         }
 
