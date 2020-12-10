@@ -7,11 +7,12 @@ namespace kFood.Tests.Processors
 {
     public class ImageTests
     {
+        #region GET food product image - Success/EmptyImage
         [Theory]
         [InlineData(3)]
         public void GetFoodProductMainImage_Success(int foodId)
         {
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IImageDAO>()
@@ -35,7 +36,7 @@ namespace kFood.Tests.Processors
         [InlineData(6)]
         public void GetFoodProductMainImage_EmptyArrayImage(int foodId)
         {
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IImageDAO>()
@@ -54,6 +55,11 @@ namespace kFood.Tests.Processors
                 Assert.Equal(expected, image);
             }
         }
+        #endregion
+
+        #region SAVE image as temporary file - Success/ValidBase64/InvalidBase64/EmptyTempPath/Error
+
+        #endregion
 
         #region Helper methods
         /// <summary>
