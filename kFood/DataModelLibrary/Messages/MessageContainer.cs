@@ -25,6 +25,17 @@
         public const string CalledMethod = "Called: \"{methodName}\"";
         #endregion
 
+        #region Informations
+        public const string Base64Valid = "Valid image as BASE64";
+        public const string Base64Invalid = "Invalid image as BASE64";
+
+        public const string TempImagePath = "Created temporary path \"{tempPath}\"";
+        #endregion
+
+        #region Configuration
+        public const string EmptyPath = "Empty path in configuration file";
+        #endregion
+
         #region Exceptions
         public const string CaughtException = "An exception was caught. Throw higher.";
         #endregion
