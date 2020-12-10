@@ -29,7 +29,7 @@ namespace kFood.Controllers
         /// </summary>
         public FoodController()
         {
-            this._logger = Log.Logger;
+            this._logger = Log.Logger.ForContext<FoodController>();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace kFood.Controllers
         public FoodController(IFoodProductProcessor foodProductProcessor) 
         {
             this._foodProductProcessor = foodProductProcessor;
-            this._logger = Log.Logger;
+            this._logger = Log.Logger.ForContext<FoodController>();
         } 
         #endregion
 
@@ -52,7 +52,7 @@ namespace kFood.Controllers
         [Route("getFood/{id:int:min(1)}")]
         public IHttpActionResult GetFood(int id)
         {
-            _logger.ForContext<FoodController>().Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
+            _logger.Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
 
             try
             {
@@ -61,19 +61,19 @@ namespace kFood.Controllers
 
                 if (foodProduct != null)
                 {
-                    _logger.ForContext<FoodController>().Information(MessageContainer.OutputActionJSON, JsonConvert.SerializeObject(foodProduct));
-                    _logger.ForContext<FoodController>().Information(MessageContainer.EndActionSuccess, MethodBase.GetCurrentMethod().Name);
+                    _logger.Information(MessageContainer.OutputActionJSON, JsonConvert.SerializeObject(foodProduct));
+                    _logger.Information(MessageContainer.EndActionSuccess, MethodBase.GetCurrentMethod().Name);
                     return Ok(foodProduct);
                 }
                 else
                 {
-                    _logger.ForContext<FoodController>().Warning(MessageContainer.EndActionNotFoundItem, MethodBase.GetCurrentMethod().Name, id);
+                    _logger.Warning(MessageContainer.EndActionNotFoundItem, MethodBase.GetCurrentMethod().Name, id);
                     return NotFound();
                 }
             }
             catch (Exception ex)
             {
-                _logger.ForContext<FoodController>().Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
+                _logger.Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
                 return BadRequest();
             }
         }
@@ -85,7 +85,7 @@ namespace kFood.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("createFoodProduct")]
-        [NonAction] // - Unavailable DEV 1.0
+        //[NonAction] // - Unavailable DEV 1.0
         public IHttpActionResult CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
             _logger.ForContext<FoodController>().Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
