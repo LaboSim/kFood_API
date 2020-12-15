@@ -12,13 +12,11 @@ namespace kFood.Tests.Handlers
 {
     public class ImageHandlerTests
     {
-        #region SAVE image as temporary file - Success/InvalidBase64/EmptyTempPath/GetTempPathException/Error
+        #region SAVE image as temporary file - Success/InvalidBase64/EmptyTempPath/GetTempPathNullReferenceException/GetTempPathException/DirectoryNotExistException
         [Theory]
         [MemberData(nameof(GetSampleImage))]
         public void SaveImage_Success(string base64Image)
         {
-            //string tempPath = ConfigurationManager.AppSettings["PathToTemporaryImage"];
-
             using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
@@ -75,8 +73,74 @@ namespace kFood.Tests.Handlers
 
                 // Assert
                 Exception ex = Assert.Throws<Exception>(actionSaveImage);
-                Assert.IsType<Exception>(ex);
+                Assert.NotNull(ex);
                 Assert.Equal(MessageContainer.EmptyPath, ex.Message);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetSampleImage))]
+        public void SaveImage_GetTempPathNullReferenceException(string base64Image)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.GetTemporaryPath())
+                    .Throws(new NullReferenceException());
+
+                var imageHandler = mock.Create<ImageHandler>();
+
+                // Act
+                Action actionSaveImage = () => imageHandler.SaveImageTemporarily(base64Image);
+
+                // Assert
+                NullReferenceException ex = Assert.Throws<NullReferenceException>(actionSaveImage);
+                Assert.NotNull(ex);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetSampleImage))]
+        public void SaveImage_GetTempPathException(string base64Image)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.GetTemporaryPath())
+                    .Throws(new Exception());
+
+                var imageHandler = mock.Create<ImageHandler>();
+
+                // Act
+                Action actionSaveImage = () => imageHandler.SaveImageTemporarily(base64Image);
+
+                // Assert
+                Exception ex = Assert.Throws<Exception>(actionSaveImage);
+                Assert.NotNull(ex);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetSampleImage))]
+        public void SaveImage_DirectoryNotExistException(string base64Image)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.GetTemporaryPath())
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}\\NotExistingFolder\\");
+
+                var imageHandler = mock.Create<ImageHandler>();
+
+                // Act
+                Action actionSaveImage = () => imageHandler.SaveImageTemporarily(base64Image);
+
+                // Assert
+                Exception ex = Assert.Throws<Exception>(actionSaveImage);
+                Assert.NotNull(ex);
             }
         }
         #endregion
