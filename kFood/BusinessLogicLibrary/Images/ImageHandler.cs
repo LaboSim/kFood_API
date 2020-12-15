@@ -29,7 +29,17 @@ namespace BusinessLogicLibrary.Images
         public ImageHandler()
         {
             this._logger = Log.Logger.ForContext<ImageHandler>();
-        } 
+        }
+
+        /// <summary>
+        /// The parameterized constructor for unit tests
+        /// </summary>
+        /// <param name="kFoodEngine">The injected instance of <see cref="IkFoodEngine"/> to unit tests</param>
+        public ImageHandler(IkFoodEngine kFoodEngine)
+        {
+            this._engine = kFoodEngine;
+            this._logger = Log.Logger.ForContext<ImageHandler>();
+        }
         #endregion
 
         /// <summary>
