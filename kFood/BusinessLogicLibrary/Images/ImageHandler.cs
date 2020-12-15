@@ -65,6 +65,12 @@ namespace BusinessLogicLibrary.Images
                         _logger.Fatal(MessageContainer.EmptyPath);
                         throw new Exception(MessageContainer.EmptyPath); 
                     }
+
+                    if (!Directory.Exists(path))
+                    {
+                        _logger.Fatal(MessageContainer.DirectoryNotExist);
+                        throw new Exception(MessageContainer.DirectoryNotExist);
+                    }
                         
                     Image image;
                     string pathImage = $"{path}{Path.GetRandomFileName().Replace(".", "")}.png";
