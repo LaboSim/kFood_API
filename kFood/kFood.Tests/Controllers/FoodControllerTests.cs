@@ -98,7 +98,7 @@ namespace kFood.Tests.Controllers
         }
         #endregion
 
-        #region CREATE FOOD PRODUCT - Ok/Conflict/BadRequest
+        #region CREATE FOOD PRODUCT - Ok/NotCreated/DTOEmpty/Exception
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Successful(FoodProductDTO foodProductDTO)
@@ -121,15 +121,16 @@ namespace kFood.Tests.Controllers
                 // Assert
                 Assert.True(actualContentResult != null);
                 Assert.True(actualContentResult.Content != null);
-                Assert.Equal(Convert.ToString(expectedFoodProduct.FoodImageURL), Convert.ToString(actualContentResult.Content.FoodImageURL));
+                Assert.Equal(expectedFoodProduct.Id, actualContentResult.Content.Id);
                 Assert.Equal(expectedFoodProduct.Name, actualContentResult.Content.Name);
                 Assert.Equal(expectedFoodProduct.Description, actualContentResult.Content.Description);
+                Assert.Equal(Convert.ToString(expectedFoodProduct.FoodImageURL), Convert.ToString(actualContentResult.Content.FoodImageURL));
             }
         }
 
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
-        public void CreateFoodProduct_Conflict(FoodProductDTO foodProductDTO)
+        public void CreateFoodProduct_NotCreated(FoodProductDTO foodProductDTO)
         {
             using (var mock = AutoMock.GetLoose())
             {
@@ -149,7 +150,7 @@ namespace kFood.Tests.Controllers
         }
 
         [Fact]
-        public void CreateFoodProduct_BadRequest()
+        public void CreateFoodProduct_DTOEmpty()
         {
             using (var mock = AutoMock.GetLoose())
             {
@@ -163,6 +164,27 @@ namespace kFood.Tests.Controllers
                 Assert.IsType<BadRequestResult>(httpActionResult);
             }
         } 
+
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_Exception(FoodProductDTO foodProductDTO)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductProcessor>()
+                    .Setup(x => x.CreateFoodProduct(foodProductDTO))
+                    .Throws(new Exception());
+
+                var foodController = mock.Create<FoodController>();
+
+                // Act
+                IHttpActionResult httpActionResult = foodController.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Assert.IsType<BadRequestResult>(httpActionResult);
+            }
+        }
         #endregion
 
         #region Helper methods
@@ -187,6 +209,7 @@ namespace kFood.Tests.Controllers
         {
             return new FoodProduct()
             {
+                Id = 1,
                 Name = foodProductDTO.Name,
                 Description = foodProductDTO.Description,
                 FoodImageURL = new Uri("http://www.contoso.com/") // only testing TODO: change for real scenario
