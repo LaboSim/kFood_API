@@ -1,6 +1,8 @@
 ﻿using Autofac.Extras.Moq;
 using BusinessLogicLibrary.ConfigurationEngine.Interfaces;
 using BusinessLogicLibrary.Images;
+using DataModelLibrary.Messages;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -10,7 +12,7 @@ namespace kFood.Tests.Handlers
 {
     public class ImageHandlerTests
     {
-        #region SAVE image as temporary file - Success/InvalidBase64/EmptyTempPath/Error
+        #region SAVE image as temporary file - Success/InvalidBase64/EmptyTempPath/GetTempPathException/Error
         [Theory]
         [MemberData(nameof(GetSampleImage))]
         public void SaveImage_Success(string base64Image)
@@ -52,6 +54,29 @@ namespace kFood.Tests.Handlers
 
                 // Assert
                 Assert.True(string.IsNullOrEmpty(imagePath));
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetSampleImage))]
+        public void SaveImage_EmptyTempPath(string base64Image)
+        {
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.GetTemporaryPath())
+                    .Returns(string.Empty);
+
+                var imageHandler = mock.Create<ImageHandler>();
+
+                // Act
+                Action actionSaveImage = () => imageHandler.SaveImageTemporarily(base64Image);
+
+                // Assert
+                Exception ex = Assert.Throws<Exception>(actionSaveImage);
+                Assert.IsType<Exception>(ex);
+                Assert.Equal(MessageContainer.EmptyPath, ex.Message);
             }
         }
         #endregion
