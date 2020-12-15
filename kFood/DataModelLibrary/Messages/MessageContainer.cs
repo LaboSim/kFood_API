@@ -34,6 +34,7 @@
 
         #region Configuration
         public const string EmptyPath = "Empty path in configuration file";
+        public const string DirectoryNotExist = "The specified in configuration file path does not exist on this machine";
         #endregion
 
         #region Exceptions
