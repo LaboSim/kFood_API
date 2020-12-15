@@ -88,12 +88,12 @@ namespace kFood.Controllers
         //[NonAction] // - Unavailable DEV 1.0
         public IHttpActionResult CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
-            _logger.ForContext<FoodController>().Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
-            _logger.ForContext<FoodController>().Information(MessageContainer.InputActionJSON, JsonConvert.SerializeObject(foodProductDTO));
+            _logger.Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
+            _logger.Information(MessageContainer.InputActionJSON, JsonConvert.SerializeObject(foodProductDTO));
 
             if (foodProductDTO == null)
             {
-                _logger.ForContext<FoodController>().Warning(MessageContainer.EmptyParam, MethodBase.GetCurrentMethod().Name);
+                _logger.Warning(MessageContainer.EmptyParam, MethodBase.GetCurrentMethod().Name);
                 return BadRequest();
             }
                 
@@ -103,16 +103,16 @@ namespace kFood.Controllers
                 FoodProduct foodProduct = _foodProductProcessor.CreateFoodProduct(foodProductDTO);
                 if (foodProduct != null)
                 {
-                    _logger.ForContext<FoodController>().Information(MessageContainer.EndActionResourceCreated, MethodBase.GetCurrentMethod().Name);
+                    _logger.Information(MessageContainer.EndActionResourceCreated, MethodBase.GetCurrentMethod().Name);
                     return Created<FoodProduct>(foodProduct.FoodImageURL, foodProduct);
                 }
 
-                _logger.ForContext<FoodController>().Warning(MessageContainer.EndActionResourceCreated, MethodBase.GetCurrentMethod().Name);
+                _logger.Warning(MessageContainer.EndActionResourceCreated, MethodBase.GetCurrentMethod().Name);
                 return Conflict();
             }
             catch(Exception ex)
             {
-                _logger.ForContext<FoodController>().Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
+                _logger.Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
                 return BadRequest();
             }
         }
