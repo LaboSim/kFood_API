@@ -29,7 +29,7 @@ namespace kFood.Models
         /// </summary>
         public FoodProductProcessor()
         {
-            this._logger = Log.Logger;
+            this._logger = Log.Logger.ForContext<FoodProductProcessor>();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace kFood.Models
         public FoodProductProcessor(IFoodProductsDAO foodProductsDAO)
         {
             this._foodProductsDAO = foodProductsDAO;
-            this._logger = Log.Logger;
+            this._logger = Log.Logger.ForContext<FoodProductProcessor>();
         }
         #endregion
 
@@ -50,7 +50,7 @@ namespace kFood.Models
         /// <returns>The instance of <see cref="FoodProduct"/> if exist</returns>
         public FoodProduct GetSpecificFoodProduct(int foodId)
         {
-            _logger.ForContext<FoodProductProcessor>().Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
+            _logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
 
             try
             {
@@ -59,7 +59,7 @@ namespace kFood.Models
             }
             catch(Exception ex)
             {
-                _logger.ForContext<FoodProductProcessor>().Error(MessageContainer.CaughtException);
+                _logger.Error(MessageContainer.CaughtException);
                 throw ex;
             }
         }
