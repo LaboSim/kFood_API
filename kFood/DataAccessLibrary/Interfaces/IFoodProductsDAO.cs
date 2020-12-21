@@ -18,7 +18,7 @@ namespace DataAccessLibrary.Interfaces
         /// The signature of method to create a new food product
         /// </summary>
         /// <param name="foodProduct">The instance of <see cref="FoodProduct"/></param>
-        /// <returns>The flag indicating whether a new food product was created</returns>
-        bool CreateFoodProduct(FoodProduct foodProduct);
+        /// <returns>The identifier of created food product</returns>
+        int CreateFoodProduct(FoodProduct foodProduct);
     }
 }
