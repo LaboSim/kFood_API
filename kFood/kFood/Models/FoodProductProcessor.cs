@@ -20,6 +20,7 @@ namespace kFood.Models
     {
         #region Private Members
         private IFoodProductsDAO _foodProductsDAO;
+        private IImageHandler _imageHandler;
         private ILogger _logger;
         #endregion
 
@@ -36,9 +37,11 @@ namespace kFood.Models
         /// The parameterized constructor for unit tests
         /// </summary>
         /// <param name="foodProductsDAO">The injected instance of <see cref="IFoodProductsDAO"/> to unit tests</param>
-        public FoodProductProcessor(IFoodProductsDAO foodProductsDAO)
+        /// <param name="imageHandler">The injected instance of <see cref="IImageHandler"/> to unit tests</param>
+        public FoodProductProcessor(IFoodProductsDAO foodProductsDAO, IImageHandler imageHandler)
         {
             this._foodProductsDAO = foodProductsDAO;
+            this._imageHandler = imageHandler;
             this._logger = Log.Logger.ForContext<FoodProductProcessor>();
         }
         #endregion
@@ -76,16 +79,16 @@ namespace kFood.Models
             FoodProduct foodProduct = Mapper.Map<FoodProduct>(foodProductDTO);
 
             /*
-             * Convert base 64 to byte[] + 
-             * Put photo to foler +
+             * Convert base 64 to byte[] + SaveImageTemporarily
+             * Put photo to foler + SaveImageTemporarily
              * Create URI to photo
              * Save in database
              * Remove temp image
             */
             try
             {
-                IImageHandler imageHandler = new ImageHandler();
-                string tempFilename = imageHandler.SaveImageTemporarily(foodProductDTO.FoodProductImage);
+                _imageHandler = _imageHandler ?? new ImageHandler();
+                string tempFilename = _imageHandler.SaveImageTemporarily(foodProductDTO.FoodProductImage);
 
                 _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
                 bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
