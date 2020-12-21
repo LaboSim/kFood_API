@@ -41,6 +41,7 @@
 
         #region Exceptions
         public const string CaughtException = "An exception was caught. Throw higher.";
+        public const string CaughtSQLException = "A SQL exception was caught. Throw higher.";
         #endregion
     }
 }
