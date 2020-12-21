@@ -24,7 +24,7 @@ namespace DataAccessLibrary
 		/// </summary>
 		public FoodProductsDAO() : base()
 		{
-			this._logger = Log.Logger;
+			this._logger = Log.Logger.ForContext<FoodProductsDAO>();
 		}
 		#endregion
 
@@ -35,7 +35,7 @@ namespace DataAccessLibrary
 		/// <returns>The instance of <see cref="FoodProduct"/> if exist</returns>
 		public FoodProduct GetFoodProduct(int foodId)
 		{
-			_logger.ForContext<FoodProductsDAO>().Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
+			_logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
 
 			FoodProduct foodProduct;
 			try
@@ -68,12 +68,12 @@ namespace DataAccessLibrary
 			}
 			catch(SqlException ex)
 			{
-				_logger.ForContext<FoodProductsDAO>().Error(MessageContainer.CaughtException);
+				_logger.Error(MessageContainer.CaughtSQLException);
 				throw ex;
 			}
 			catch (Exception ex)
 			{
-				_logger.ForContext<FoodProductsDAO>().Error(MessageContainer.CaughtException);
+				_logger.Error(MessageContainer.CaughtException);
 				throw ex;
 			}
 		}
@@ -83,32 +83,41 @@ namespace DataAccessLibrary
 		/// </summary>
 		/// <param name="foodProduct">The instance of <see cref="FoodProduct"/></param>
 		/// <returns>The flag indicating whether a new food product was created</returns>
-		public bool CreateFoodProduct(FoodProduct foodProduct)
+		public int CreateFoodProduct(FoodProduct foodProduct)
 		{
-			// TODO: Delete sp_CreateFoodProduct
-
-			string query = @"INSERT INTO FoodProducts (Name) VALUES (@Name)
-							INSERT INTO FoodImageStore (Image, Description, FoodId, MainImage) 
-							VALUES ((SELECT * FROM OPENROWSET(BULK 'D:\Szymon\Temporary\Lasagne.jpg', SINGLE_BLOB)Image), @Description, SCOPE_IDENTITY(), @MainImage)";
+			_logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
 
 			try
 			{
 				using(var con = new SqlConnection(EstablishConnectionString()))
 				{
-					SqlCommand cmd = new SqlCommand(query, con);
-					cmd.CommandType = CommandType.Text;
+					SqlCommand cmd = new SqlCommand("sp_CreateFoodProduct", con);
+					cmd.CommandType = CommandType.StoredProcedure;
 
-					cmd.Parameters.Add(new SqlParameter("@Name", SqlDbType.NVarChar).Value = foodProduct.Name);
-					cmd.Parameters.Add(new SqlParameter("@Description", SqlDbType.NVarChar).Value = foodProduct.Description);
+					cmd.Parameters.Add(new SqlParameter("@Name", foodProduct.Name));
+					cmd.Parameters.Add(new SqlParameter("@Description", foodProduct.Description));
+
+					con.Open();
+					int id = 0;
+					bool created = int.TryParse(Convert.ToString(cmd.ExecuteScalar()), out id);
+					if (created)
+					{
+						_logger.Information(MessageContainer.CreatedOnDatabase);
+						return id;
+					}
+					else
+						return 0;
 				}
-
-				// only test
-				return true;
 			}
-			catch (Exception e)
+			catch (SqlException ex)
 			{
-				// only test
-				return false;
+				_logger.Error(MessageContainer.CaughtSQLException);
+				throw ex;
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(MessageContainer.CaughtException);
+				throw ex;
 			}
 		}
 	}
