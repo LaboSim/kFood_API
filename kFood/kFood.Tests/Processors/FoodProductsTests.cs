@@ -100,7 +100,7 @@ namespace kFood.Tests.Processors
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
                     .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
-                    .Returns(true);
+                    .Returns(1);
 
                 mock.Mock<IImageHandler>()
                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
@@ -180,7 +180,7 @@ namespace kFood.Tests.Processors
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
                     .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
-                    .Returns(false);
+                    .Returns(0);
 
                 mock.Mock<IImageHandler>()
                     .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
