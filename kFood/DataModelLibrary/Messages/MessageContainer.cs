@@ -30,6 +30,8 @@
         public const string Base64Invalid = "Invalid image as BASE64";
 
         public const string TempImagePath = "Created temporary path \"{tempPath}\"";
+
+        public const string CreatedOnDatabase = "Created new record in database";
         #endregion
 
         #region Configuration
