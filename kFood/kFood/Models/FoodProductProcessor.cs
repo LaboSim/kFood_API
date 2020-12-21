@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusinessLogicLibrary.ConfigurationEngine;
+using BusinessLogicLibrary.ConfigurationEngine.Interfaces;
 using BusinessLogicLibrary.Images;
 using BusinessLogicLibrary.Images.Interfaces;
 using DataAccessLibrary;
@@ -21,6 +23,7 @@ namespace kFood.Models
         #region Private Members
         private IFoodProductsDAO _foodProductsDAO;
         private IImageHandler _imageHandler;
+        private IkFoodEngine _kFoodEngine;
         private ILogger _logger;
         #endregion
 
@@ -80,18 +83,31 @@ namespace kFood.Models
 
             /*
              * Convert base 64 to byte[] + SaveImageTemporarily
-             * Put photo to foler + SaveImageTemporarily
+             * Put photo to folder + SaveImageTemporarily
+             * Save food product in database +
              * Create URI to photo
-             * Save in database
+             * Save image of food product in database
              * Remove temp image
             */
             try
             {
+                // Convert base 64 to byte[] & Put photo to folder
                 _imageHandler = _imageHandler ?? new ImageHandler();
                 string tempFilename = _imageHandler.SaveImageTemporarily(foodProductDTO.FoodProductImage);
 
+                // Save food product in database
                 _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
-                bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
+                int foodProductID = _foodProductsDAO.CreateFoodProduct(foodProduct);
+                if(foodProductID == 0)
+                    return (FoodProduct)null;
+
+                // Create URI to photo
+                _kFoodEngine = _kFoodEngine ?? new kFoodEngine();
+
+
+                //_foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+                //bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
+                bool created = true;
 
                 if (created)
                     return foodProduct;
