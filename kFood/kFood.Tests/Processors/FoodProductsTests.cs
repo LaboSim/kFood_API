@@ -1,5 +1,6 @@
 ﻿using Autofac.Extras.Moq;
 using AutoMapper;
+using BusinessLogicLibrary.ConfigurationEngine.Interfaces;
 using BusinessLogicLibrary.Images.Interfaces;
 using DataAccessLibrary.Interfaces;
 using DataModelLibrary.DTO.Foods;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Web;
 using Xunit;
 
 namespace kFood.Tests.Processors
@@ -94,13 +96,18 @@ namespace kFood.Tests.Processors
         public void CreateFoodProduct_Created(FoodProductDTO foodProductDTO)
         {
             Mapper.AddProfile<MappingProfile>();
+            int mockID = 1;
 
             using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
                     .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
-                    .Returns(1);
+                    .Returns(mockID);
+
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.CreateURIToSpecificPhoto(1))
+                    .Returns(string.Concat("http://localhost:51052/", ConfigurationManager.AppSettings["RouteToImage"], Convert.ToString(mockID)));
 
                 mock.Mock<IImageHandler>()
                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
@@ -169,13 +176,12 @@ namespace kFood.Tests.Processors
         }
 
         [Theory]
-        [MemberData(nameof(CreateFoodProductToPass))] 
-        #endregion
+        [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_NotCreated(FoodProductDTO foodProductDTO)
         {
             Mapper.AddProfile<MappingProfile>();
 
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IFoodProductsDAO>()
@@ -195,6 +201,7 @@ namespace kFood.Tests.Processors
                 Assert.Null(foodProduct);
             }
         }
+        #endregion
 
         #region Helper methods
         /// <summary>
@@ -209,7 +216,7 @@ namespace kFood.Tests.Processors
                 Id = foodId,
                 Name = "Sample food product",
                 Description = "Sample description of food product",
-                FoodImageURL = new Uri("http://localhost:51052/view/foodproductimage/1")
+                FoodImageURL = new Uri(string.Concat("http://localhost:51052/", ConfigurationManager.AppSettings["RouteToImage"], Convert.ToString(foodId)))
             };
         }
 
