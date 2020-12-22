@@ -41,10 +41,12 @@ namespace kFood.Models
         /// </summary>
         /// <param name="foodProductsDAO">The injected instance of <see cref="IFoodProductsDAO"/> to unit tests</param>
         /// <param name="imageHandler">The injected instance of <see cref="IImageHandler"/> to unit tests</param>
-        public FoodProductProcessor(IFoodProductsDAO foodProductsDAO, IImageHandler imageHandler)
+        /// <param name="kFoodEngine">The injected instance of <see cref="IkFoodEngine"/> to unit tests</param>
+        public FoodProductProcessor(IFoodProductsDAO foodProductsDAO, IImageHandler imageHandler, IkFoodEngine kFoodEngine)
         {
             this._foodProductsDAO = foodProductsDAO;
             this._imageHandler = imageHandler;
+            this._kFoodEngine = kFoodEngine;
             this._logger = Log.Logger.ForContext<FoodProductProcessor>();
         }
         #endregion
@@ -103,6 +105,7 @@ namespace kFood.Models
 
                 // Create URI to photo
                 _kFoodEngine = _kFoodEngine ?? new kFoodEngine();
+                string photoURI = _kFoodEngine.CreateURIToSpecificPhoto(foodProductID);
 
 
                 //_foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
