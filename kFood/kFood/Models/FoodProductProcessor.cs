@@ -87,7 +87,8 @@ namespace kFood.Models
              * Convert base 64 to byte[] + SaveImageTemporarily
              * Put photo to folder + SaveImageTemporarily
              * Save food product in database +
-             * Create URI to photo
+             * Create URI to photo +
+             * Update food product with URI photo value
              * Save image of food product in database
              * Remove temp image
             */
