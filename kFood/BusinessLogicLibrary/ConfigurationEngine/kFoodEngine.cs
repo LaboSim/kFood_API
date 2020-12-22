@@ -1,6 +1,7 @@
 ﻿using BusinessLogicLibrary.ConfigurationEngine.Interfaces;
 using System;
 using System.Configuration;
+using System.Web;
 
 namespace BusinessLogicLibrary.ConfigurationEngine
 {
@@ -28,6 +29,36 @@ namespace BusinessLogicLibrary.ConfigurationEngine
             catch(Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Create URI for photo of specific food product
+        /// </summary>
+        /// <param name="id">The identifier of food product</param>
+        /// <returns>The instance <see cref="Uri"/> indicating for food product photo</returns>
+        public string CreateURIToSpecificPhoto(int id)
+        {
+            try
+            {
+                var request = HttpContext.Current.Request;
+                var appUrl = HttpRuntime.AppDomainAppVirtualPath;
+                if (appUrl != "/")
+                    appUrl = "/" + appUrl;
+
+                var actualAppUrl = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, appUrl);
+                var partialRouteToImage = ConfigurationManager.AppSettings["RouteToImage"];
+
+                var baseUrl = string.Concat(actualAppUrl, partialRouteToImage);
+                return baseUrl;
+            }
+            catch(NullReferenceException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
             }
         }
     }
