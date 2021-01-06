@@ -90,7 +90,7 @@ namespace kFood.Tests.Processors
         }
         #endregion
 
-        #region CREATE FOOD PRODUCT - Created/SaveImageTemporarilyTempPathEmpty/SaveImageTemporarilyDirectoryNotExist/NotCreated
+        #region CREATE FOOD PRODUCT - Created/SaveImageTemporarilyTempPathEmpty/SaveImageTemporarilyDirectoryNotExist/CreateFoodProduct_CreateURIToSpecificPhoto_NullReferenceException/CreateFoodProduct_CreateURIToSpecificPhoto_Exception/NotCreated
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Created(FoodProductDTO foodProductDTO)
@@ -106,7 +106,7 @@ namespace kFood.Tests.Processors
                     .Returns(mockID);
 
                 mock.Mock<IkFoodEngine>()
-                    .Setup(x => x.CreateURIToSpecificPhoto(1))
+                    .Setup(x => x.CreateURIToSpecificPhoto(mockID))
                     .Returns(string.Concat("http://localhost:51052/", ConfigurationManager.AppSettings["RouteToImage"], Convert.ToString(mockID)));
 
                 mock.Mock<IImageHandler>()
@@ -172,6 +172,74 @@ namespace kFood.Tests.Processors
                 Exception ex = Assert.Throws<Exception>(actionCreateFoodProduct);
                 Assert.NotNull(ex);
                 Assert.Equal(MessageContainer.DirectoryNotExist, ex.Message);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_CreateURIToSpecificPhoto_NullReferenceException(FoodProductDTO foodProductDTO)
+        {
+            Mapper.AddProfile<MappingProfile>();
+            int mockID = 1;
+
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IImageHandler>()
+                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
+
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
+                    .Returns(mockID);
+
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.CreateURIToSpecificPhoto(mockID))
+                    .Throws(new NullReferenceException());
+
+                var foodProductProcessor = mock.Create<FoodProductProcessor>();
+
+                // Act
+                Action actionCreateFoodProduct = () => foodProductProcessor.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Exception ex = Assert.Throws<NullReferenceException>(actionCreateFoodProduct);
+                Assert.NotNull(ex);
+                Assert.IsType<NullReferenceException>(ex);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_CreateURIToSpecificPhoto_Exception(FoodProductDTO foodProductDTO)
+        {
+            Mapper.AddProfile<MappingProfile>();
+            int mockID = 1;
+
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IImageHandler>()
+                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
+
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
+                    .Returns(mockID);
+
+                mock.Mock<IkFoodEngine>()
+                    .Setup(x => x.CreateURIToSpecificPhoto(mockID))
+                    .Throws(new Exception());
+
+                var foodProductProcessor = mock.Create<FoodProductProcessor>();
+
+                // Act
+                Action actionCreateFoodProduct = () => foodProductProcessor.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Exception ex = Assert.Throws<Exception>(actionCreateFoodProduct);
+                Assert.NotNull(ex);
+                Assert.IsType<Exception>(ex);
             }
         }
 
