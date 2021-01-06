@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Web;
 using Xunit;
 
 namespace kFood.Tests.Processors
@@ -90,7 +89,60 @@ namespace kFood.Tests.Processors
         }
         #endregion
 
-        #region CREATE FOOD PRODUCT - Created/SaveImageTemporarilyTempPathEmpty/SaveImageTemporarilyDirectoryNotExist/CreateFoodProduct_CreateURIToSpecificPhoto_NullReferenceException/CreateFoodProduct_CreateURIToSpecificPhoto_Exception/NotCreated
+        #region CREATE FOOD PRODUCT
+        #region (SaveImageTemporarily) - SaveImageTemporarilyTempPathEmpty/SaveImageTemporarilyDirectoryNotExist
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_SaveImageTemporarilyTempPathEmpty(FoodProductDTO foodProductDTO)
+        {
+            Mapper.AddProfile<MappingProfile>();
+
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IImageHandler>()
+                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                    .Throws(new Exception(MessageContainer.EmptyPath));
+
+                var foodProductProcessor = mock.Create<FoodProductProcessor>();
+
+                // Act
+                Action actionCreateFoodProduct = () => foodProductProcessor.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Exception ex = Assert.Throws<Exception>(actionCreateFoodProduct);
+                Assert.NotNull(ex);
+                Assert.Equal(MessageContainer.EmptyPath, ex.Message);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_SaveImageTemporarilyDirectoryNotExist(FoodProductDTO foodProductDTO)
+        {
+            Mapper.AddProfile<MappingProfile>();
+
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IImageHandler>()
+                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                    .Throws(new Exception(MessageContainer.DirectoryNotExist));
+
+                var foodProductProcessor = mock.Create<FoodProductProcessor>();
+
+                // Act
+                Action actionCreateFoodProduct = () => foodProductProcessor.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Exception ex = Assert.Throws<Exception>(actionCreateFoodProduct);
+                Assert.NotNull(ex);
+                Assert.Equal(MessageContainer.DirectoryNotExist, ex.Message);
+            }
+        }
+        #endregion
+
+        #region (CreateFoodProduct) - Created//NotCreated
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_Created(FoodProductDTO foodProductDTO)
@@ -127,54 +179,33 @@ namespace kFood.Tests.Processors
 
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
-        public void CreateFoodProduct_SaveImageTemporarilyTempPathEmpty(FoodProductDTO foodProductDTO)
+        public void CreateFoodProduct_NotCreated(FoodProductDTO foodProductDTO)
         {
             Mapper.AddProfile<MappingProfile>();
 
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
+                    .Returns(0);
+
                 mock.Mock<IImageHandler>()
                     .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
-                    .Throws(new Exception(MessageContainer.EmptyPath));
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
 
-                var foodProductProcessor = mock.Create<FoodProductProcessor>();
-
-                // Act
-                Action actionCreateFoodProduct = () => foodProductProcessor.CreateFoodProduct(foodProductDTO);
-
-                // Assert
-                Exception ex = Assert.Throws<Exception>(actionCreateFoodProduct);
-                Assert.NotNull(ex);
-                Assert.Equal(MessageContainer.EmptyPath, ex.Message);
-            }
-        }
-
-        [Theory]
-        [MemberData(nameof(CreateFoodProductToPass))]
-        public void CreateFoodProduct_SaveImageTemporarilyDirectoryNotExist(FoodProductDTO foodProductDTO)
-        {
-            Mapper.AddProfile<MappingProfile>();
-
-            using(var mock = AutoMock.GetLoose())
-            {
-                // Arrange
-                mock.Mock<IImageHandler>()
-                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
-                    .Throws(new Exception(MessageContainer.DirectoryNotExist));
-
-                var foodProductProcessor = mock.Create<FoodProductProcessor>();
+                var cls = mock.Create<FoodProductProcessor>();
 
                 // Act
-                Action actionCreateFoodProduct = () => foodProductProcessor.CreateFoodProduct(foodProductDTO);
+                FoodProduct foodProduct = cls.CreateFoodProduct(foodProductDTO);
 
                 // Assert
-                Exception ex = Assert.Throws<Exception>(actionCreateFoodProduct);
-                Assert.NotNull(ex);
-                Assert.Equal(MessageContainer.DirectoryNotExist, ex.Message);
+                Assert.Null(foodProduct);
             }
         }
+        #endregion
 
+        #region (CreateURIToSpecificPhoto) - CreateFoodProduct_CreateURIToSpecificPhoto_NullReferenceException/CreateFoodProduct_CreateURIToSpecificPhoto_Exception
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_CreateURIToSpecificPhoto_NullReferenceException(FoodProductDTO foodProductDTO)
@@ -216,7 +247,7 @@ namespace kFood.Tests.Processors
             Mapper.AddProfile<MappingProfile>();
             int mockID = 1;
 
-            using(var mock = AutoMock.GetLoose())
+            using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
                 mock.Mock<IImageHandler>()
@@ -242,33 +273,7 @@ namespace kFood.Tests.Processors
                 Assert.IsType<Exception>(ex);
             }
         }
-
-        [Theory]
-        [MemberData(nameof(CreateFoodProductToPass))]
-        public void CreateFoodProduct_NotCreated(FoodProductDTO foodProductDTO)
-        {
-            Mapper.AddProfile<MappingProfile>();
-
-            using (var mock = AutoMock.GetLoose())
-            {
-                // Arrange
-                mock.Mock<IFoodProductsDAO>()
-                    .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
-                    .Returns(0);
-
-                mock.Mock<IImageHandler>()
-                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
-                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
-
-                var cls = mock.Create<FoodProductProcessor>();
-
-                // Act
-                FoodProduct foodProduct = cls.CreateFoodProduct(foodProductDTO);
-
-                // Assert
-                Assert.Null(foodProduct);
-            }
-        }
+        #endregion
         #endregion
 
         #region Helper methods
