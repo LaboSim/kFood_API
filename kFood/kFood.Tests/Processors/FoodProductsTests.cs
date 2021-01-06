@@ -12,7 +12,9 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
+using System.Runtime.Serialization;
 using Xunit;
 
 namespace kFood.Tests.Processors
@@ -142,10 +144,10 @@ namespace kFood.Tests.Processors
         }
         #endregion
 
-        #region (CreateFoodProduct) - Created//NotCreated
+        #region (CreateFoodProduct) - Created/ThrowSqlException/NotCreated
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
-        public void CreateFoodProduct_Created(FoodProductDTO foodProductDTO)
+        public void CreateFoodProduct_CreateFoodProduct_Created(FoodProductDTO foodProductDTO)
         {
             Mapper.AddProfile<MappingProfile>();
             int mockID = 1;
@@ -153,6 +155,10 @@ namespace kFood.Tests.Processors
             using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
+                mock.Mock<IImageHandler>()
+                   .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                   .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
+
                 mock.Mock<IFoodProductsDAO>()
                     .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
                     .Returns(mockID);
@@ -160,10 +166,6 @@ namespace kFood.Tests.Processors
                 mock.Mock<IkFoodEngine>()
                     .Setup(x => x.CreateURIToSpecificPhoto(mockID))
                     .Returns(string.Concat("http://localhost:51052/", ConfigurationManager.AppSettings["RouteToImage"], Convert.ToString(mockID)));
-
-                mock.Mock<IImageHandler>()
-                   .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
-                   .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
 
                 var cls = mock.Create<FoodProductProcessor>();
 
@@ -179,7 +181,39 @@ namespace kFood.Tests.Processors
 
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
-        public void CreateFoodProduct_NotCreated(FoodProductDTO foodProductDTO)
+        public void CreateFoodProduct_CreateFoodProduct_ThrowSqlException(FoodProductDTO foodProductDTO)
+        {
+            Mapper.AddProfile<MappingProfile>();
+            int mockID = 1;
+
+            SqlException sqlException = FormatterServices.GetUninitializedObject(typeof(SqlException)) as SqlException;
+
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IImageHandler>()
+                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
+
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
+                    .Throws(sqlException);
+
+                var foodProductProcessor = mock.Create<FoodProductProcessor>();
+
+                // Act
+                Action actionCreateFoodProduct = () => foodProductProcessor.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                SqlException ex = Assert.Throws<SqlException>(actionCreateFoodProduct);
+                Assert.NotNull(ex);
+                Assert.IsType<SqlException>(ex);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_CreateFoodProduct_NotCreated(FoodProductDTO foodProductDTO)
         {
             Mapper.AddProfile<MappingProfile>();
 
@@ -205,7 +239,7 @@ namespace kFood.Tests.Processors
         }
         #endregion
 
-        #region (CreateURIToSpecificPhoto) - CreateFoodProduct_CreateURIToSpecificPhoto_NullReferenceException/CreateFoodProduct_CreateURIToSpecificPhoto_Exception
+        #region (CreateURIToSpecificPhoto) - ThrowNullReferenceException/ThrowException
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_CreateURIToSpecificPhoto_NullReferenceException(FoodProductDTO foodProductDTO)
