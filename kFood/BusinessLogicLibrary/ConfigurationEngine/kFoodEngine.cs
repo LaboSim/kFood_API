@@ -37,6 +37,8 @@ namespace BusinessLogicLibrary.ConfigurationEngine
         /// </summary>
         /// <param name="id">The identifier of food product</param>
         /// <returns>The instance <see cref="Uri"/> indicating for food product photo</returns>
+        /// <exception cref="NullReferenceException">Returned when cannot read web.Config for some reason</exception>
+        /// <exception cref="Exception">Returned when occurs some other exception than <see cref="NullReferenceException"/></exception>
         public string CreateURIToSpecificPhoto(int id)
         {
             try
