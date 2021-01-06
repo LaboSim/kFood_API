@@ -144,7 +144,7 @@ namespace kFood.Tests.Processors
         }
         #endregion
 
-        #region (CreateFoodProduct) - Created/ThrowSqlException/NotCreated
+        #region (CreateFoodProduct) - Created/ThrowSqlException/ThrowException/NotCreated
         [Theory]
         [MemberData(nameof(CreateFoodProductToPass))]
         public void CreateFoodProduct_CreateFoodProduct_Created(FoodProductDTO foodProductDTO)
@@ -184,7 +184,6 @@ namespace kFood.Tests.Processors
         public void CreateFoodProduct_CreateFoodProduct_ThrowSqlException(FoodProductDTO foodProductDTO)
         {
             Mapper.AddProfile<MappingProfile>();
-            int mockID = 1;
 
             SqlException sqlException = FormatterServices.GetUninitializedObject(typeof(SqlException)) as SqlException;
 
@@ -208,6 +207,35 @@ namespace kFood.Tests.Processors
                 SqlException ex = Assert.Throws<SqlException>(actionCreateFoodProduct);
                 Assert.NotNull(ex);
                 Assert.IsType<SqlException>(ex);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(CreateFoodProductToPass))]
+        public void CreateFoodProduct_CreateFoodProduct_ThrowException(FoodProductDTO foodProductDTO)
+        {
+            Mapper.AddProfile<MappingProfile>();
+
+            using(var mock = AutoMock.GetLoose())
+            {
+                // Arrange 
+                mock.Mock<IImageHandler>()
+                    .Setup(x => x.SaveImageTemporarily(foodProductDTO.FoodProductImage))
+                    .Returns($"{ConfigurationManager.AppSettings["PathToTemporaryImage"]}{Path.GetRandomFileName().Replace(".", "")}");
+
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(x => x.CreateFoodProduct(It.IsAny<FoodProduct>()))
+                    .Throws(new Exception());
+
+                var foodProductProcessor = mock.Create<FoodProductProcessor>();
+
+                // Act
+                Action actionCreateFoodProduct = () => foodProductProcessor.CreateFoodProduct(foodProductDTO);
+
+                // Assert
+                Exception ex = Assert.Throws<Exception>(actionCreateFoodProduct);
+                Assert.NotNull(ex);
+                Assert.IsType<Exception>(ex);
             }
         }
 
