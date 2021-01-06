@@ -103,7 +103,8 @@ namespace DataAccessLibrary
 					if (created)
 					{
 						_logger.Information(MessageContainer.CreatedOnDatabase);
-						return id;
+						foodProduct.Id = id;
+						return foodProduct.Id;
 					}
 					else
 						return 0;
