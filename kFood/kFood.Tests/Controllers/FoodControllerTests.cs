@@ -29,7 +29,7 @@ namespace kFood.Tests.Controllers
                         Id = foodId,
                         Name = "Food Name",
                         Description = "Sample description of food product",
-                        FoodImageURL = new Uri("http://localhost:51052/getFood/1")
+                        FoodImageURL = new Uri($"http://localhost:51052/getFood/{foodId}")
                     });
 
                 var cls = mock.Create<FoodController>();
@@ -38,7 +38,7 @@ namespace kFood.Tests.Controllers
                     Id = foodId,
                     Name = "Food Name",
                     Description = "Sample description of food product",
-                    FoodImageURL = new Uri("http://localhost:51052/getFood/1")
+                    FoodImageURL = new Uri($"http://localhost:51052/getFood/{foodId}")
                 };
 
                 // Act
@@ -46,7 +46,7 @@ namespace kFood.Tests.Controllers
                 var actualContentResult = actualActionResult as OkNegotiatedContentResult<FoodProduct>;
 
                 // Assert
-                Assert.IsType<OkResult>(actualActionResult);
+                Assert.IsType<OkNegotiatedContentResult<FoodProduct>>(actualActionResult);
                 Assert.True(actualActionResult != null);
                 Assert.True(actualContentResult.Content != null);
                 Assert.Equal(expeced.Id, actualContentResult.Content.Id);
