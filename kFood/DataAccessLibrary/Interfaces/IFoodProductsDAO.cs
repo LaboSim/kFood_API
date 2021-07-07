@@ -1,4 +1,5 @@
 ﻿using DataModelLibrary.Models.Foods;
+using System;
 
 namespace DataAccessLibrary.Interfaces
 {
@@ -20,5 +21,12 @@ namespace DataAccessLibrary.Interfaces
         /// <param name="foodProduct">The instance of <see cref="FoodProduct"/></param>
         /// <returns>The identifier of created food product</returns>
         int CreateFoodProduct(FoodProduct foodProduct);
+
+        /// <summary>
+        /// The signature of method to update food product image Url
+        /// </summary>
+        /// <param name="foodId">The identifier of food product to update photo Uri</param>
+        /// <param name="photoUri">The instance of <see cref="Uri"/> indicating on food product main photo</param>
+        void UpdateUrlImage(int foodId, Uri photoUri);
     }
 }

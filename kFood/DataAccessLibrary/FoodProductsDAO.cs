@@ -121,5 +121,10 @@ namespace DataAccessLibrary
 				throw ex;
 			}
 		}
+
+		public void UpdateUrlImage(int foodId, Uri photoUri)
+		{
+
+		}
 	}
 }

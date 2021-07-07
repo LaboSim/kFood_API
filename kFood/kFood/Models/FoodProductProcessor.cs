@@ -107,10 +107,12 @@ namespace kFood.Models
                 // Create URI to photo
                 _kFoodEngine = _kFoodEngine ?? new kFoodEngine();
                 string photoURI = _kFoodEngine.CreateURIToSpecificPhoto(foodProductID);
+                foodProduct.FoodImageURL = new Uri(photoURI);
 
+                // Update food product with URI photo value
+                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO(); // -> to test and implement
+                _foodProductsDAO.UpdateUrlImage(foodProduct.Id, foodProduct.FoodImageURL);
 
-                //_foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
-                //bool created = _foodProductsDAO.CreateFoodProduct(foodProduct);
                 bool created = true;
 
                 if (created)
