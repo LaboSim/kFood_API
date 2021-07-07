@@ -46,6 +46,7 @@ namespace kFood.Tests.Controllers
                 var actualContentResult = actualActionResult as OkNegotiatedContentResult<FoodProduct>;
 
                 // Assert
+                Assert.IsType<OkResult>(actualActionResult);
                 Assert.True(actualActionResult != null);
                 Assert.True(actualContentResult.Content != null);
                 Assert.Equal(expeced.Id, actualContentResult.Content.Id);
