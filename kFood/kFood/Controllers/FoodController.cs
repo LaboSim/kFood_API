@@ -85,7 +85,7 @@ namespace kFood.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("createFoodProduct")]
-        //[NonAction] // - Unavailable DEV 1.0
+        [NonAction] // - Unavailable DEV 1.0
         public IHttpActionResult CreateFoodProduct(FoodProductDTO foodProductDTO)
         {
             _logger.Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
