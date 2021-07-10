@@ -6,6 +6,7 @@ using kFood.Models.Interfaces;
 using Newtonsoft.Json;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Http;
 
@@ -86,7 +87,18 @@ namespace kFood.Controllers
         [Route("getFoods")]
         public IHttpActionResult GetFoods()
         {
-            throw new NotImplementedException();
+            _logger.Information(MessageContainer.StartAction, MethodBase.GetCurrentMethod().Name);
+
+            try
+            {
+                _foodProductProcessor = _foodProductProcessor ?? new FoodProductProcessor();
+                return Ok(_foodProductProcessor.GetFoods());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, MessageContainer.EndActionError, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
         }
 
         /// <summary>

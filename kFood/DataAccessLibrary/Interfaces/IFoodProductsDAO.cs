@@ -1,5 +1,6 @@
 ﻿using DataModelLibrary.Models.Foods;
 using System;
+using System.Collections.Generic;
 
 namespace DataAccessLibrary.Interfaces
 {
@@ -14,6 +15,12 @@ namespace DataAccessLibrary.Interfaces
         /// <param name="foodId">The food product identifier</param>
         /// <returns>The instance of <see cref="FoodProduct"/></returns>
         FoodProduct GetFoodProduct(int foodId);
+
+        /// <summary>
+        /// The signature of method which get collection of foods from database
+        /// </summary>
+        /// <returns>The collection instances of <see cref="FoodProduct"/></returns>
+        IList<FoodProduct> GetFoods();
 
         /// <summary>
         /// The signature of method to create a new food product

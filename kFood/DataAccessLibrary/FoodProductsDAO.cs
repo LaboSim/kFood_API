@@ -3,6 +3,7 @@ using DataModelLibrary.Messages;
 using DataModelLibrary.Models.Foods;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
@@ -78,12 +79,21 @@ namespace DataAccessLibrary
 			}
 		}
 
-		/// <summary>
-		/// Create a new food product
-		/// </summary>
-		/// <param name="foodProduct">The instance of <see cref="FoodProduct"/></param>
-		/// <returns>The flag indicating whether a new food product was created</returns>
-		public int CreateFoodProduct(FoodProduct foodProduct)
+        /// <summary>
+        /// Get collection of foods from database
+        /// </summary>
+        /// <returns>The collection instances of <see cref="FoodProduct"/></returns>
+        public IList<FoodProduct> GetFoods()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Create a new food product
+        /// </summary>
+        /// <param name="foodProduct">The instance of <see cref="FoodProduct"/></param>
+        /// <returns>The flag indicating whether a new food product was created</returns>
+        public int CreateFoodProduct(FoodProduct foodProduct)
 		{
 			_logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
 
@@ -126,5 +136,5 @@ namespace DataAccessLibrary
 		{
 
 		}
-	}
+    }
 }

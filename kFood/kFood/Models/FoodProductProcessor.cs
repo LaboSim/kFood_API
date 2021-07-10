@@ -79,7 +79,18 @@ namespace kFood.Models
         /// <returns>The collection instances of <see cref="FoodProduct"/></returns>
         public IEnumerable<FoodProduct> GetFoods()
         {
-            throw new NotImplementedException();
+            _logger.Information(MessageContainer.CalledMethod, MethodBase.GetCurrentMethod().Name);
+
+            try
+            {
+                _foodProductsDAO = _foodProductsDAO ?? new FoodProductsDAO();
+                return _foodProductsDAO.GetFoods();
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(MessageContainer.CaughtException);
+                throw;
+            }
         }
 
         /// <summary>
