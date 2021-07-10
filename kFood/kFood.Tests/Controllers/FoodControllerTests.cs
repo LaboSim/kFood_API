@@ -251,9 +251,28 @@ namespace kFood.Tests.Controllers
             };
         }
 
+        /// <summary>
+        /// Get sample collection of foods
+        /// </summary>
+        /// <returns>The collection of <see cref="FoodProduct"/> instances</returns>
         private IList<FoodProduct> GetFoodsCollection()
         {
-            
+            IList<FoodProduct> outputFoods = new List<FoodProduct>();
+
+            for(int i=0; i<5; i++)
+            {
+                FoodProduct foodProduct = new FoodProduct()
+                {
+                    Id = i,
+                    Name = $"Food Name No.{i}",
+                    Description = $"Food Description No.{i}",
+                    FoodImageURL = new Uri($"http://localhost:51052/getFood/{i}")
+                };
+
+                outputFoods.Add(foodProduct);
+            }
+
+            return outputFoods;
         }
         #endregion
     }
