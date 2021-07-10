@@ -111,23 +111,26 @@ namespace kFood.Tests.Controllers
                     .Returns(GetFoodsCollection());
 
                 var controller = mock.Create<FoodController>();
-                IList<FoodProduct> expected = GetFoodsCollection();
+                IEnumerable<FoodProduct> expected = GetFoodsCollection();
 
                 // Act
                 IHttpActionResult actualActionResult = controller.GetFoods();
-                var actualContentResult = actualActionResult as OkNegotiatedContentResult<IList<FoodProduct>>;
+                var actualContentResult = actualActionResult as OkNegotiatedContentResult<IEnumerable<FoodProduct>>;
 
                 // Assert
-                Assert.IsType<OkNegotiatedContentResult<IList<FoodProduct>>>(actualContentResult);
+                Assert.IsType<OkNegotiatedContentResult<IEnumerable<FoodProduct>>>(actualActionResult);
                 Assert.NotNull(actualActionResult);
                 Assert.NotNull(actualContentResult.Content);
 
-                for(int i=0; i<expected.Count; i++)
+                IList<FoodProduct> contentList = actualContentResult.Content as IList<FoodProduct>;
+                IList<FoodProduct> expectedList = expected as IList<FoodProduct>;
+
+                for (int i=0; i< expectedList.Count; i++)
                 {
-                    Assert.Equal(expected[i].Id, actualContentResult.Content[i].Id);
-                    Assert.Equal(expected[i].Name, actualContentResult.Content[i].Name);
-                    Assert.Equal(expected[i].Description, actualContentResult.Content[i].Description);
-                    Assert.Equal(expected[i].FoodImageURL.AbsoluteUri, actualContentResult.Content[i].FoodImageURL.AbsoluteUri);
+                    Assert.Equal(expectedList[i].Id, contentList[i].Id);
+                    Assert.Equal(expectedList[i].Name, contentList[i].Name);
+                    Assert.Equal(expectedList[i].Description, contentList[i].Description);
+                    Assert.Equal(expectedList[i].FoodImageURL.AbsoluteUri, contentList[i].FoodImageURL.AbsoluteUri);
                 }
             }
         } 
