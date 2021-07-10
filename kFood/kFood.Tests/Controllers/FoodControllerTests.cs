@@ -107,7 +107,7 @@ namespace kFood.Tests.Controllers
             {
                 // Arrange
                 mock.Mock<IFoodProductProcessor>()
-                    .Setup(m => m.GetFoods())
+                    .Setup(p => p.GetFoods())
                     .Returns(GetFoodsCollection());
 
                 var controller = mock.Create<FoodController>();
