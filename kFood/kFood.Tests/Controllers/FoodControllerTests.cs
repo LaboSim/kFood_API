@@ -106,10 +106,29 @@ namespace kFood.Tests.Controllers
             using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
+                mock.Mock<IFoodProductProcessor>()
+                    .Setup(m => m.GetFoods())
+                    .Returns(GetFoodsCollection());
+
+                var controller = mock.Create<FoodController>();
+                IList<FoodProduct> expected = GetFoodsCollection();
 
                 // Act
+                IHttpActionResult actualActionResult = controller.GetFoods();
+                var actualContentResult = actualActionResult as OkNegotiatedContentResult<IList<FoodProduct>>;
 
                 // Assert
+                Assert.IsType<OkNegotiatedContentResult<IList<FoodProduct>>>(actualContentResult);
+                Assert.NotNull(actualActionResult);
+                Assert.NotNull(actualContentResult.Content);
+
+                for(int i=0; i<expected.Count; i++)
+                {
+                    Assert.Equal(expected[i].Id, actualContentResult.Content[i].Id);
+                    Assert.Equal(expected[i].Name, actualContentResult.Content[i].Name);
+                    Assert.Equal(expected[i].Description, actualContentResult.Content[i].Description);
+                    Assert.Equal(expected[i].FoodImageURL.AbsoluteUri, actualContentResult.Content[i].FoodImageURL.AbsoluteUri);
+                }
             }
         } 
         #endregion
@@ -230,6 +249,11 @@ namespace kFood.Tests.Controllers
                 Description = foodProductDTO.Description,
                 FoodImageURL = new Uri("http://www.contoso.com/") // only testing TODO: change for real scenario
             };
+        }
+
+        private IList<FoodProduct> GetFoodsCollection()
+        {
+            
         }
         #endregion
     }
