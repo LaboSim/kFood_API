@@ -100,7 +100,18 @@ namespace kFood.Tests.Controllers
         #endregion
 
         #region GET FOODS - Ok
-         
+        [Fact]
+        public void GetFoods_Ok()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+
+                // Act
+
+                // Assert
+            }
+        } 
         #endregion
 
         #region CREATE FOOD PRODUCT - Ok/NotCreated/DTOEmpty/Exception
