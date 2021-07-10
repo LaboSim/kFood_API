@@ -79,6 +79,17 @@ namespace kFood.Controllers
         }
 
         /// <summary>
+        /// Get foods collection
+        /// </summary>
+        /// <returns>The collection instances of <see cref="FoodProduct"/></returns>
+        [HttpGet]
+        [Route("getFoods")]
+        public IHttpActionResult GetFoods()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Create a new food product
         /// </summary>
         /// <param name="foodProductDTO">The instance of <see cref="FoodProductDTO"/> in POST request</param>

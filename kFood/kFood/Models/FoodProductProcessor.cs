@@ -11,6 +11,7 @@ using DataModelLibrary.Models.Foods;
 using kFood.Models.Interfaces;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace kFood.Models
@@ -70,6 +71,15 @@ namespace kFood.Models
                 _logger.Error(MessageContainer.CaughtException);
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// Get foods collection
+        /// </summary>
+        /// <returns>The collection instances of <see cref="FoodProduct"/></returns>
+        public IEnumerable<FoodProduct> GetFoods()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
