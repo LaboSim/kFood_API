@@ -113,10 +113,10 @@ namespace kFood.Tests.Processors
                 IList<FoodProduct> expectedFoods = UnitTestHelper.GetFoodsCollection();
 
                 // Act
-                var actualFood = processor.GetFoods();
+                var actualFoods = processor.GetFoods();
 
                 // Assert
-                var actualFoodList = actualFood as IList<FoodProduct>;
+                var actualFoodList = actualFoods as IList<FoodProduct>;
 
                 Assert.Equal(expectedFoods.Count, actualFoodList.Count);
 
@@ -127,6 +127,36 @@ namespace kFood.Tests.Processors
                     Assert.Equal(expectedFoods[i].Description, actualFoodList[i].Description);
                     Assert.Equal(expectedFoods[i].FoodImageURL.AbsoluteUri, actualFoodList[i].FoodImageURL.AbsoluteUri);
                 }
+            }
+        }
+
+        /// <summary>
+        /// UnitTest
+        /// Module: Processor
+        /// Description: Get empty collection of foods
+        /// Expected result: Empty collection of foods
+        /// </summary>
+        [Fact]
+        public void GetFoods_Ok_EmptyCollection()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(d => d.GetFoods())
+                    .Returns(new List<FoodProduct>());
+
+                var processor = mock.Create<FoodProductProcessor>();
+                IList<FoodProduct> expectedFoods = new List<FoodProduct>();
+
+                // Act
+                var actualFoods = processor.GetFoods();
+
+                // Assert
+                IList<FoodProduct> actualFoodList = actualFoods as IList<FoodProduct>;
+
+                Assert.True(expectedFoods.Count == actualFoodList.Count);
+                Assert.True(actualFoodList.Count == 0);
             }
         }
         #endregion

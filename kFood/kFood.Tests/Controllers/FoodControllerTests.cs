@@ -100,12 +100,12 @@ namespace kFood.Tests.Controllers
         }
         #endregion
 
-        #region GET FOODS - Ok
+        #region GET FOODS - Ok/Ok_EmptyCollection
         /// <summary>
         /// UnitTest
-        /// Controller
-        /// Get result of http action related to fetch collection of foods
-        /// Result: Ok 
+        /// Module: Controller
+        /// Description: Get result of http action related to fetch collection of foods
+        /// Expected result: Ok 
         /// </summary>
         [Fact]
         public void GetFoods_Ok()
@@ -118,7 +118,7 @@ namespace kFood.Tests.Controllers
                     .Returns(UnitTestHelper.GetFoodsCollection());
 
                 var controller = mock.Create<FoodController>();
-                IEnumerable<FoodProduct> expected = UnitTestHelper.GetFoodsCollection();
+                IEnumerable<FoodProduct> expectedFoods = UnitTestHelper.GetFoodsCollection();
 
                 // Act
                 IHttpActionResult actualActionResult = controller.GetFoods();
@@ -130,7 +130,7 @@ namespace kFood.Tests.Controllers
                 Assert.NotNull(actualContentResult.Content);
 
                 IList<FoodProduct> contentList = actualContentResult.Content as IList<FoodProduct>;
-                IList<FoodProduct> expectedList = expected as IList<FoodProduct>;
+                IList<FoodProduct> expectedList = expectedFoods as IList<FoodProduct>;
 
                 Assert.Equal(expectedList.Count, contentList.Count);
 
@@ -142,7 +142,42 @@ namespace kFood.Tests.Controllers
                     Assert.Equal(expectedList[i].FoodImageURL.AbsoluteUri, contentList[i].FoodImageURL.AbsoluteUri);
                 }
             }
-        } 
+        }
+
+        /// <summary>
+        /// UnitTest
+        /// Module: Controller
+        /// Description: Get result of http action related to fetch empty collection of foods
+        /// Expected result: Ok 
+        /// </summary>
+        [Fact]
+        public void GetFoods_Ok_EmptyCollection()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+                mock.Mock<IFoodProductProcessor>()
+                    .Setup(p => p.GetFoods())
+                    .Returns(new List<FoodProduct>());
+
+                var controller = mock.Create<FoodController>();
+                IList<FoodProduct> expectedFoods = new List<FoodProduct>();
+
+                // Act
+                IHttpActionResult actualActionResult = controller.GetFoods();
+                var actualContentResult = actualActionResult as OkNegotiatedContentResult<IEnumerable<FoodProduct>>;
+
+                // Assert
+                Assert.IsType<OkNegotiatedContentResult<IEnumerable<FoodProduct>>>(actualActionResult);
+                Assert.NotNull(actualActionResult);
+                Assert.NotNull(actualContentResult.Content);
+
+                IList<FoodProduct> contentList = actualContentResult.Content as IList<FoodProduct>;
+
+                Assert.True(expectedFoods.Count == contentList.Count);
+                Assert.True(contentList.Count == 0);
+            }
+        }
         #endregion
 
         #region CREATE FOOD PRODUCT - Ok/NotCreated/DTOEmpty/Exception
