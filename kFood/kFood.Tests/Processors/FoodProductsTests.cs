@@ -8,6 +8,7 @@ using DataModelLibrary.Messages;
 using DataModelLibrary.Models.Foods;
 using kFood.App_Start;
 using kFood.Models;
+using kFood.Tests.Helpers;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -104,10 +105,28 @@ namespace kFood.Tests.Processors
             using (var mock = AutoMock.GetLoose())
             {
                 // Arrange
+                mock.Mock<IFoodProductsDAO>()
+                    .Setup(d => d.GetFoods())
+                    .Returns(UnitTestHelper.GetFoodsCollection());
+
+                var processor = mock.Create<FoodProductProcessor>();
+                IList<FoodProduct> expectedFoods = UnitTestHelper.GetFoodsCollection();
 
                 // Act
+                var actualFood = processor.GetFoods();
 
                 // Assert
+                var actualFoodList = actualFood as IList<FoodProduct>;
+
+                Assert.Equal(expectedFoods.Count, actualFoodList.Count);
+
+                for(int i=0; i<expectedFoods.Count; i++)
+                {
+                    Assert.Equal(expectedFoods[i].Id, actualFoodList[i].Id);
+                    Assert.Equal(expectedFoods[i].Name, actualFoodList[i].Name);
+                    Assert.Equal(expectedFoods[i].Description, actualFoodList[i].Description);
+                    Assert.Equal(expectedFoods[i].FoodImageURL.AbsoluteUri, actualFoodList[i].FoodImageURL.AbsoluteUri);
+                }
             }
         }
         #endregion
