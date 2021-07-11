@@ -91,6 +91,27 @@ namespace kFood.Tests.Processors
         }
         #endregion
 
+        #region GET FOODS - Ok
+        /// <summary>
+        /// UnitTest
+        /// Module: Processor
+        /// Description: Get collection of foods
+        /// Expected result: Collection of foods
+        /// </summary>
+        [Fact]
+        public void GetFoods_Ok()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                // Arrange
+
+                // Act
+
+                // Assert
+            }
+        }
+        #endregion
+
         #region CREATE FOOD PRODUCT
         #region (SaveImageTemporarily) - SaveImageTemporarilyTempPathEmpty/SaveImageTemporarilyDirectoryNotExist
         [Theory]

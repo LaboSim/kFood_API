@@ -102,7 +102,8 @@ namespace kFood.Tests.Controllers
         #region GET FOODS - Ok
         /// <summary>
         /// UnitTest
-        /// Get collection of foods
+        /// Controller
+        /// Get result of http action related to fetch collection of foods
         /// Result: Ok 
         /// </summary>
         [Fact]
