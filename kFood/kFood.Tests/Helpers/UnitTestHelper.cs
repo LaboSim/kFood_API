@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace kFood.Tests.Helpers
 {
+    /// <summary>
+    /// Unit test helper
+    /// </summary>
     internal class UnitTestHelper
     {
         /// <summary>
