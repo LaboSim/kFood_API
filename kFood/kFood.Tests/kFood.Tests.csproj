@@ -112,6 +112,7 @@
     <Compile Include="Controllers\ImageControllerTests.cs" />
     <Compile Include="DAO\DataAccessBuilderTests.cs" />
     <Compile Include="Handlers\ImageHandlerTests.cs" />
+    <Compile Include="Helpers\UnitTestHelper.cs" />
     <Compile Include="Processors\FoodProductsTests.cs" />
     <Compile Include="Processors\ImageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,6 +4,7 @@ using DataModelLibrary.DTO.Foods;
 using DataModelLibrary.Models.Foods;
 using kFood.Controllers;
 using kFood.Models.Interfaces;
+using kFood.Tests.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -114,10 +115,10 @@ namespace kFood.Tests.Controllers
                 // Arrange
                 mock.Mock<IFoodProductProcessor>()
                     .Setup(p => p.GetFoods())
-                    .Returns(GetFoodsCollection());
+                    .Returns(UnitTestHelper.GetFoodsCollection());
 
                 var controller = mock.Create<FoodController>();
-                IEnumerable<FoodProduct> expected = GetFoodsCollection();
+                IEnumerable<FoodProduct> expected = UnitTestHelper.GetFoodsCollection();
 
                 // Act
                 IHttpActionResult actualActionResult = controller.GetFoods();
@@ -260,30 +261,6 @@ namespace kFood.Tests.Controllers
                 Description = foodProductDTO.Description,
                 FoodImageURL = new Uri("http://www.contoso.com/") // only testing TODO: change for real scenario
             };
-        }
-
-        /// <summary>
-        /// Get sample collection of foods
-        /// </summary>
-        /// <returns>The collection of <see cref="FoodProduct"/> instances</returns>
-        private IList<FoodProduct> GetFoodsCollection()
-        {
-            IList<FoodProduct> outputFoods = new List<FoodProduct>();
-
-            for(int i=0; i<5; i++)
-            {
-                FoodProduct foodProduct = new FoodProduct()
-                {
-                    Id = i,
-                    Name = $"Food Name No.{i}",
-                    Description = $"Food Description No.{i}",
-                    FoodImageURL = new Uri($"http://localhost:51052/getFood/{i}")
-                };
-
-                outputFoods.Add(foodProduct);
-            }
-
-            return outputFoods;
         }
         #endregion
     }
