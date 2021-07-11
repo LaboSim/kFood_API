@@ -100,6 +100,11 @@ namespace kFood.Tests.Controllers
         #endregion
 
         #region GET FOODS - Ok
+        /// <summary>
+        /// UnitTest
+        /// Get collection of foods
+        /// Result: Ok 
+        /// </summary>
         [Fact]
         public void GetFoods_Ok()
         {
@@ -124,6 +129,8 @@ namespace kFood.Tests.Controllers
 
                 IList<FoodProduct> contentList = actualContentResult.Content as IList<FoodProduct>;
                 IList<FoodProduct> expectedList = expected as IList<FoodProduct>;
+
+                Assert.Equal(expectedList.Count, contentList.Count);
 
                 for (int i=0; i< expectedList.Count; i++)
                 {
